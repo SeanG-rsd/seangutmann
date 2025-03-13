@@ -1,0 +1,57 @@
+{
+    "header": "Sean Gutmann",
+    "content": {
+        "contact_info": {
+            "email": "seagut20@gmail.com",
+            "phone": "(206) 775-4405",
+            "LinkedIn": "https://www.linkedin.com/in/seangutmann/"
+        },
+        "objective": "Driven computer science student with a curiosity and passion for learning, looking for opportunities to gain more technical skills and expand knowledge.",
+        "skills": [
+            "Proficient in C#, Java, and C++",
+            "Familiar with Git and its functions",
+            "Experienced in Unity 2D and 3D, including online multiplayer",
+            "Experience in publishing apps on the iOS App Store",
+            "Quick to adapt, with several years of experience. Picking up new programming languages comes easily as the only new learning required is syntax"
+        ],
+        "education": [
+            {
+                "duration": "Sept 2024 to Present",
+                "qualification": "Bachelor of Science in Computer Science",
+                "institution": "Oregon State University"
+            },
+            {
+                "duration": "Sept 2020 to June 2024",
+                "qualification": "High School Diploma",
+                "institution": "Cedarcrest High School",
+                "details": "4.0 GPA, Valedictorian"
+            }
+        ],
+        "employment_history": [
+            {
+                "duration": "April 2021 to Present",
+                "position": "Co-Founder",
+                "company": "Nutron Labs",
+                "details": [
+                    "Sole developer for 5 iOS apps, developed in Unity, with over 400 downloads combined.",
+                    "Games include:",
+                    {
+                        "Ball Sorting In Tubes": "A 2D puzzle game with advertising revenue.",
+                        "Tank Battles – Online": "A 3D shooter with multiplayer, implemented using Photon and Playfab.",
+                        "Inbetween Worlds and Chicken Daydreams": "2D infinite runners with pixel art styles, monetized with ads.",
+                        "Everything Calendar": "A comprehensive calendar app combining multiple organizational tools."
+                    }
+                ]
+            },
+            {
+                "duration": "June 2020 – Sep 2021",
+                "position": "Shop Staff",
+                "company": "GSR Rentals",
+                "details": [
+                    "Tasks included unloading/loading orders, setting up large canopies, and cleaning the shop.",
+                    "Required physical labor and client interaction."
+                ]
+            }
+        ]
+    }
+}

@@ -1,11 +1,51 @@
 ---
 import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import background from '../assets/background.svg';
+
+const num = 1;
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+
+<Layout title="Home">
+	<div id="container">
+		<main class="flex-1 flex flex-col items-center justify-center">
+			<h1>Hi There! I am a current Oregon State</h1>
+			<h1>University First-Year studying</h1>
+			<h1>Computer Science Systems</h1>
+		</main>
+	</div>
 </Layout>
+
+<style>
+	#background {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		filter: blur(100px);
+	}
+
+	#container {
+		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+		height: 100%;
+	}
+
+	main {
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	h1 {
+		fill-color: rgb(255, 255, 255, 255);
+		font-size: 44px;
+		margin-top: 0.25em;
+	}
+</style>
