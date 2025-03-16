@@ -1,11 +1,7 @@
 ---
     import Layout from "../layouts/Layout.astro";
-    import InfoBlock from "../components/InfoBlock.js";
-    import Objective from "../components/Objective.jsx";
-    import Button from "../components/Button.js";
     import gitHubLogo from '../assets/github-mark.svg';
     import background from '../assets/background.svg';
-    //import { handleFileUpload } from "../javascript/utils";
 ---
 
 <script>
@@ -14,18 +10,23 @@
 
 <Layout title="About">
     <div>
-    <div id="container">
-        <main>
-            <section id="hero">
-            <h1 class="text-xl">Computer Science Student | Oregon State University</h1>
-        </section>
-        </main>
-    </div>
     <!-- Objective -->
-    <div>
-        <h1 class="max-w-fit border-b-blue-500 border-b-2 p-4 text-2xl font-semibold ml-4">Objective</h2>
-        <p class="p-4 ml-4">Driven computer science student with a curiosity and passion for learning, looking for opportunities to gain more technical 
-        </br>skills and expand knowledge. </p>
+    <h1 class="p-4 text-center">
+		Driven computer science student with a curiosity and passion for learning, </br>
+		looking for opportunities to gain more technical skills and expand knowledge.
+	</h1>
+
+	<div>
+        <h1 class="max-w-fit border-b-blue-500 border-b-2 font-semibold p-4 ml-4">Education</h1>
+        <div class="p-4 ml-4 flex gap-4">
+            <p>Sept 2024 to June 2028</br></br>Sept 2020 to June 2024</p>
+            <p>
+                Pursuing a Bachelor of Science in Computer Science Systems</br>
+                4.0 GPA, Oregon State University</br>
+                High School Diploma, Cedarcrest Highschool</br>
+                4.0 GPA, Valedictorian
+            </p>
+        </div>
     </div>
     <!-- Skills -->
     <div>
@@ -35,29 +36,23 @@
             <li>Familiar with Git and its functions</li>
             <li>Experienced in Unity 2D and 3D, including online multiplayer</li>
             <li>Experience in publishing apps on the iOS App Store </li>
-            <li>Quick to adapt, with several years of experience. Picking up new programming languages comes easily as the only 
-            </br>new learning required is syntax</li>
+            <li>Machine Learning, Deep Learning</li>
+			<li>Flutter/Andriod Studio</li>
         </ul>
     </div>
-    <!-- Education -->
-    <div>
-        <h1 class="max-w-fit border-b-blue-500 border-b-2 p-4 text-2xl font-semibold ml-4">Education</h2>
-        <div class="p-4 ml-4 flex gap-4 ">
-            <p>Sept 2024 to Present </br></br>Sept 2020 to June 2024</p>
-            <p>
-                Pursuing a Bachelor of Science in Computer Science</br>
-                Oregon State University</br>
-                High School Diploma, Cedarcrest Highschool</br>
-                4.0 GPA, Valedictorian
-            </p>
-        </div>
-    </div>
-    <!-- Employment -->
+    
     <div>
         <h1 class="max-w-fit border-b-blue-500 border-b-2 p-4 text-2xl font-semibold ml-4">Experience</h2>
-        <div class="p-4 ml-4 flex gap-4 ">
-            <p>April 2021 to Present </br></br>Sept 2020 to June 2024</p>
+        <div class="p-4 ml-4 flex gap-4">
+            <p>October 2024 to Present</br></br></br></br></br></br></br>April 2021 to Present</p>
             <p>
+				Star Labs (URSA Engage)</br>
+				Research Assistant in Maching Learning</br>
+				Currently working on a project with two other students that implements a large language model into an app, using it to</br>
+				provide nutrition advice to users. Implemented RAG (Retrieval Augmented Generation) using Python to improve the</br>
+				accuracy of the LLM when generating recipes, and to produce results based on the documents embedded into the</br>
+				database.</br></br>
+
                 Nutron Labs</br>
                 Co-Founder</br>
                 In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps </br>
@@ -66,11 +61,17 @@
             </p>
         </div>
     </div>
-    <!-- Project -->
-
-    <!-- Contact -->
-
+    
+	<div>
+        <h1 class="max-w-fit border-b-blue-500 border-b-2 p-4 text-2xl font-semibold ml-4">Clubs and Leadership</h2>
+        <div class="p-4 ml-4 flex gap-4">
+            <ul class="list-disc p-4">
+				<li>Current Webmaster OSU App Development Club</li>
+				<li>Active member in the Google Developer Club and ACM</li>
+			</ul>
+        </div>
     </div>
+
 </div>
 </Layout>
 
@@ -105,8 +106,13 @@
 	}
 
 	h1 {
-		font-size: 22px;
+		font-size: 30px;
 		margin-top: 0.25em;
+	}
+
+	p {
+		font-size: 20px;
+		font-weight: normal;
 	}
 
 	#links {
@@ -165,7 +171,7 @@
 	}
 
 	p {
-		color: #4b5563;
+		color: #111827;
 		font-size: 16px;
 		line-height: 24px;
 		letter-spacing: -0.006em;

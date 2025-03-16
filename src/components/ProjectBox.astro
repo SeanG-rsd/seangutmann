@@ -1,0 +1,92 @@
+---
+const title = "Ball Sorting in Tubes";
+
+import BallSortIcon from "../assets/Icon (1).png";
+---
+
+<div class="dropdown">
+    <button id="dropdown-button" class="info">
+        <div id="dropdown-icon" data-title={title} data-icon={BallSortIcon.src}>  
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+              </svg>                   
+            </div>
+        <div class="flex flex-col">
+            <h1>{title}</h1>
+            <p>Short description for the app or project it also</p>
+        </div>
+        <img src={BallSortIcon.src} class="icon"></img>
+    </button>
+    <div id="dropdown-content" class="content">
+        <p>Info</p>
+        <p>Info</p>
+        <p>Info</p>
+        <p>Info</p>
+        <p>Info</p>
+        <p>Info</p>
+    </div>
+</div>
+
+<style>
+    .icon {
+        max-width: 80px;
+        max-height: 80px;
+    }
+
+    .dropdown {
+        flex-direction: row;
+    }
+
+    .dropdown .info {
+      background-color: white;
+      width: 100%;
+      min-width: 1000px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 100px;
+    }
+  
+    .dropdown p{
+      display: block;
+      color: black;
+      text-decoration: none;
+      padding: 10px 15px;
+    }
+  
+    .dropdown .content {
+    max-height: 0;
+    overflow: hidden;
+    background-color: white;
+    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+    }
+
+    .dropdown .content.open {
+      max-height: 800px;
+    padding: 10px;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("dropdown-button");
+      const icon = document.getElementById("dropdown-icon");
+      const content = document.getElementById("dropdown-content");
+      
+    
+      if (btn != null && content != null && icon != null)
+      {
+        const title = btn.getAttribute("data-title");
+        btn.addEventListener("click", () => {
+      content.classList.toggle("open");
+      icon.innerHTML = content.classList.contains("open") ? 
+  `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />` :
+  `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />`;
+    });
+    }
+    });
+</script>

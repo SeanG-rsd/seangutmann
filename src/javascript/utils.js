@@ -3,15 +3,6 @@ import portfolio from "../javascript/portfolio.json"
 
 const dataMap = new Map(Object.entries(portfolio));
 
-// const InfoBlock = (props) => {
-//     return (
-//         <div class="bg-red-400 w-screen flex justify-center flex-col">
-//             <h1 class="font-bold text-2xl p-2">{props.title}</h1>
-//             <p class="ml-3 p-2">{props.content}</p>
-//         </div>
-//     )
-// }
-
 function createInfoBlock(title, content) {
     // Create the main container div
     const container = document.createElement('div');
