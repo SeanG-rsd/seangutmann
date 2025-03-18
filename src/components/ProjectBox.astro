@@ -1,12 +1,11 @@
 ---
-const title = "Ball Sorting in Tubes";
 
-import BallSortIcon from "../assets/Icon (1).png";
+const { title, description, iconPath } = Astro.props;
 ---
 
 <div class="dropdown">
     <button id="dropdown-button" class="info">
-        <div id="dropdown-icon" data-title={title} data-icon={BallSortIcon.src}>  
+        <div id="dropdown-icon" data-title={title}>  
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
               </svg>                   
@@ -15,17 +14,14 @@ import BallSortIcon from "../assets/Icon (1).png";
             <h1>{title}</h1>
             <p>Short description for the app or project it also</p>
         </div>
-        <img src={BallSortIcon.src} class="icon"></img>
+        <img src={iconPath} class="icon"></img>
     </button>
     <div id="dropdown-content" class="content">
-        <p>Info</p>
-        <p>Info</p>
-        <p>Info</p>
-        <p>Info</p>
-        <p>Info</p>
-        <p>Info</p>
+        <slot/>
     </div>
 </div>
+
+<!-- transition: <property> <duration> <timing-function> <delay>; -->
 
 <style>
     .icon {
@@ -41,12 +37,20 @@ import BallSortIcon from "../assets/Icon (1).png";
       background-color: white;
       width: 100%;
       min-width: 1000px;
+      max-width: 1000px;
       min-height: 200px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
       gap: 100px;
+      border-radius: 20px;
+      transition: border-radius 0s ease-in-out 0.5s;
+    }
+
+    .dropdown .info.open {
+      border-radius: 20px 20px 0 0;
+      transition: border-radius 0s linear 0s;
     }
   
     .dropdown p{
@@ -61,32 +65,14 @@ import BallSortIcon from "../assets/Icon (1).png";
     overflow: hidden;
     background-color: white;
     transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+    width: 100%;
+    min-width: 1000px;
+    max-width: 1000px;
+    border-radius: 0 0 20px 20px;
     }
 
     .dropdown .content.open {
-      max-height: 800px;
-    padding: 10px;
+      max-height: 10000px;
+      padding: 10px;
     }
 </style>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const btn = document.getElementById("dropdown-button");
-      const icon = document.getElementById("dropdown-icon");
-      const content = document.getElementById("dropdown-content");
-      
-    
-      if (btn != null && content != null && icon != null)
-      {
-        const title = btn.getAttribute("data-title");
-        btn.addEventListener("click", () => {
-      content.classList.toggle("open");
-      icon.innerHTML = content.classList.contains("open") ? 
-  `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />` :
-  `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />`;
-    });
-    }
-    });
-</script>

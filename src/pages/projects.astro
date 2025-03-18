@@ -4,7 +4,35 @@ import ProjectBox from "../components/ProjectBox.astro";
 ---
 
 <Layout title="Projects">
-    <div class="flex flex-col items-center justify-start gap-10">
+    <div class="flex flex-col items-center justify-start gap-10 mb-20">
+        <ProjectBox title="Ball Sorting in Tubes" iconPath="../src/assets/ball-sort-icon.png">
+            <div class="container">
+                <div class="flex flex-col">
+                    <h1>Simple Puzzle Game</h1>
+                    <p>
+                        Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store.
+                        This is a test to see if the text will go to a new line or not.
+                    </p>
+                </div>
+                <img src="../src/assets/demos/BallSortDemo.png" class="demo"/>
+                <img src="../src/assets/demos/BallSortDemo.png" class="demo"/>
+            </div>
+        </ProjectBox>
+        <ProjectBox title="Tank Battles - Online" iconPath="../src/assets/battle-tanks-icon.png">
+            <div class="container">
+                <div class="flex flex-col">
+                    <h1>Simple Puzzle Game</h1>
+                    <p>
+                        Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store.
+                        This is a test to see if the text will go to a new line or not.
+                    </p>
+                </div>
+                <div class="flex flex-col">
+                    <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
+                    <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
+                </div>
+            </div>
+        </ProjectBox>
         <ProjectBox>
             <p>Information about project</p>
         </ProjectBox>
@@ -19,3 +47,58 @@ import ProjectBox from "../components/ProjectBox.astro";
         </ProjectBox>
     </div>
 </Layout>
+
+<style>
+
+    h1 {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    p {
+        padding: 10px 10px;
+        white-space: normal;
+    }
+
+    .container {
+        display: flex;
+        max-width: 100%;
+    }
+
+    .demo {
+        max-width: 250px;
+    }
+
+    .demo-h {
+        max-height: 250px;
+    }
+
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+  
+    const buttons = document.querySelectorAll(".dropdown .info");
+    const contentContainers = document.querySelectorAll(".dropdown .content");
+    const icons = document.querySelectorAll(".dropdown #dropdown-icon");
+  
+    buttons.forEach((btn, index) => {
+      const icon = icons[index];
+      const content = contentContainers[index];
+  
+      btn.addEventListener("click", () => {
+        content.classList.toggle("open");
+        btn.classList.toggle("open");
+
+        icon.innerHTML = content.classList.contains("open") 
+          ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+              </svg>`
+          : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+              </svg>`;
+      });
+    });
+  });
+  </script>
