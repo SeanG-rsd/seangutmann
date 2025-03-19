@@ -5,8 +5,11 @@ import ProjectBox from "../components/ProjectBox.astro";
 
 <Layout title="Projects">
     <div class="flex flex-col items-center justify-start gap-10 mb-20">
-        <ProjectBox title="Ball Sorting in Tubes" iconPath="../src/assets/ball-sort-icon.png">
-            <div class="container">
+        <ProjectBox 
+         title="Ball Sorting in Tubes"
+         description="This is the description for Ball Sort. Testing to see how long the text will go before it automatically wraps to a new line upder the title"
+         iconPath="../src/assets/ball-sort-icon.png">
+            <div class="container gap-8">
                 <div class="flex flex-col">
                     <h1>Simple Puzzle Game</h1>
                     <p>
@@ -27,7 +30,7 @@ import ProjectBox from "../components/ProjectBox.astro";
                         This is a test to see if the text will go to a new line or not.
                     </p>
                 </div>
-                <div class="flex flex-col">
+                <div class="flex flex-col gap-8">
                     <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
                     <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
                 </div>
@@ -64,14 +67,17 @@ import ProjectBox from "../components/ProjectBox.astro";
     .container {
         display: flex;
         max-width: 100%;
+        padding: 30px;
     }
 
     .demo {
         max-width: 250px;
+        min-width: 250px;
     }
 
     .demo-h {
-        max-height: 250px;
+        min-width: 500px;
+        max-width: 500px;
     }
 
 </style>

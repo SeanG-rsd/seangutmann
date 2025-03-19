@@ -5,16 +5,18 @@ const { title, description, iconPath } = Astro.props;
 
 <div class="dropdown">
     <button id="dropdown-button" class="info">
-        <div id="dropdown-icon" data-title={title}>  
+        <div id="dropdown-icon" data-title={title} class="w-1/4 flex justify-center">  
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
               </svg>                   
             </div>
-        <div class="flex flex-col">
+        <div class="flex flex-col w-1/2 justify-center">
             <h1>{title}</h1>
-            <p>Short description for the app or project it also</p>
+            <p>{description}</p>
         </div>
-        <img src={iconPath} class="icon"></img>
+        <div class="w-1/4 flex justify-end mr-12">
+          <img src={iconPath} class="icon"></img>
+        </div>
     </button>
     <div id="dropdown-content" class="content">
         <slot/>
@@ -24,9 +26,19 @@ const { title, description, iconPath } = Astro.props;
 <!-- transition: <property> <duration> <timing-function> <delay>; -->
 
 <style>
+
+    h1 {
+      font-weight: bold;
+      font-size: 22px;
+    }
+
+    p {
+
+    }
+
     .icon {
-        max-width: 80px;
-        max-height: 80px;
+        max-width: 120px;
+        max-height: 120px;
     }
 
     .dropdown {
@@ -64,7 +76,7 @@ const { title, description, iconPath } = Astro.props;
     max-height: 0;
     overflow: hidden;
     background-color: white;
-    transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+    transition: max-height 0.5s ease-in-out, padding;
     width: 100%;
     min-width: 1000px;
     max-width: 1000px;
@@ -73,6 +85,5 @@ const { title, description, iconPath } = Astro.props;
 
     .dropdown .content.open {
       max-height: 10000px;
-      padding: 10px;
     }
 </style>

@@ -1,36 +1,30 @@
 ---
-    import Layout from "../layouts/Layout.astro";
-    import gitHubLogo from '../assets/github-mark.svg';
-    import background from '../assets/background.svg';
+import Layout from "../layouts/Layout.astro";
 ---
-
-<script>
-    //import "../javascript/utils";
-</script>
 
 <Layout title="About">
     <div>
     <!-- Objective -->
-    <h1 class="p-4 text-center">
-		Driven computer science student with a curiosity and passion for learning, </br>
-		looking for opportunities to gain more technical skills and expand knowledge.
-	</h1>
+    	<h1 class="p-4 text-center">
+			Driven computer science student with a curiosity and passion for learning, </br>
+			looking for opportunities to gain more technical skills and expand knowledge.
+		</h1>
 
 	<div>
-        <h1 class="max-w-fit border-b-blue-500 border-b-2 font-semibold p-4 ml-4">Education</h1>
+        <h1 class="section-title">Education</h1>
         <div class="p-4 ml-4 flex gap-4">
-            <p>Sept 2024 to June 2028</br></br>Sept 2020 to June 2024</p>
-            <p>
+            <p class="info">Sept 2024 to June 2028</br></br>Sept 2020 to June 2024</p>
+            <p class="info">
                 Pursuing a Bachelor of Science in Computer Science Systems</br>
                 4.0 GPA, Oregon State University</br>
                 High School Diploma, Cedarcrest Highschool</br>
                 4.0 GPA, Valedictorian
-            </p>
+			</p>
         </div>
     </div>
     <!-- Skills -->
     <div>
-        <h1 class="max-w-fit border-b-blue-500 border-b-2 p-4 text-2xl font-semibold ml-4">Technical Skills</h2>
+        <h1 class="section-title">Technical Skills</h2>
         <ul class="list-disc p-4 ml-8">
             <li>Proficient in C#, Java, Python, and C++</li>
             <li>Familiar with Git and its functions</li>
@@ -42,10 +36,10 @@
     </div>
     
     <div>
-        <h1 class="max-w-fit border-b-blue-500 border-b-2 p-4 text-2xl font-semibold ml-4">Experience</h2>
+        <h1 class="section-title">Experience</h2>
         <div class="p-4 ml-4 flex gap-4">
-            <p>October 2024 to Present</br></br></br></br></br></br></br>April 2021 to Present</p>
-            <p>
+            <p class="info">October 2024 to Present</br></br></br></br></br></br></br>April 2021 to Present</p>
+            <p class="info">
 				Star Labs (URSA Engage)</br>
 				Research Assistant in Maching Learning</br>
 				Currently working on a project with two other students that implements a large language model into an app, using it to</br>
@@ -58,12 +52,12 @@
                 In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps </br>
                 on the iOS App Store. These products, all developed in Unity, required a different set of skills to </br> 
                 develop each and amassed over 400 downloads among all of them. </br>
-            </p>
+			</p>
         </div>
     </div>
     
 	<div>
-        <h1 class="max-w-fit border-b-blue-500 border-b-2 p-4 text-2xl font-semibold ml-4">Clubs and Leadership</h2>
+        <h1 class="section-title">Clubs and Leadership</h2>
         <div class="p-4 ml-4 flex gap-4">
             <ul class="list-disc p-4">
 				<li>Current Webmaster OSU App Development Club</li>
@@ -76,25 +70,17 @@
 </Layout>
 
 <style>
-	#background {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -1;
-		filter: blur(100px);
+
+	.section-title {
+		font-weight: 500;
+		display: inline-block;
+		border: bottom;
+		border-bottom: 2px solid var(--matrix-green);	
+		padding: 0 16px 8px 16px;
 	}
 
-	#container {
-		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-		height: 100%;
-	}
-
-	main {
-		height: 100%;
-		display: flex;
-		justify-content: center;
+	.info {
+		color: var(--matrix-green);
 	}
 
 	#hero {
@@ -106,12 +92,15 @@
 	}
 
 	h1 {
+		font-family: 'Fira Code', monospace;
 		font-size: 30px;
 		margin-top: 0.25em;
 	}
 
 	p {
+		font-family: 'Fira Code', monospace;
 		font-size: 20px;
+		color: var(--matrix-green);
 		font-weight: normal;
 	}
 
