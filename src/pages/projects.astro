@@ -4,6 +4,59 @@ import ProjectBox from "../components/ProjectBox.astro";
 ---
 
 <Layout title="Projects">
+    <div class="p-10">
+        <div>
+            <p>cd ./projects/</p>
+        </div>
+    <div class="grid bg-black bg-opacity-70">
+        <ProjectBox 
+         title="Ball Sorting in Tubes"
+         description="This is the description for Ball Sort. Testing to see how long the text will go before it automatically wraps to a new line upder the title"
+         iconPath="../src/assets/ball-sort-icon.png">
+            <div class="container gap-8">
+                <div class="flex flex-col">
+                    <h1>Simple Puzzle Game</h1>
+                    <p>
+                        Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store.
+                        This is a test to see if the text will go to a new line or not.
+                    </p>
+                </div>
+                <img src="../src/assets/demos/BallSortDemo.png" class="demo"/>
+                <img src="../src/assets/demos/BallSortDemo.png" class="demo"/>
+            </div>
+        </ProjectBox>
+        <ProjectBox title="Tank Battles - Online" iconPath="../src/assets/battle-tanks-icon.png">
+            <div class="container">
+                <div class="flex flex-col">
+                    <h1>Simple Puzzle Game</h1>
+                    <p>
+                        Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store.
+                        This is a test to see if the text will go to a new line or not.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-8">
+                    <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
+                    <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
+                </div>
+            </div>
+        </ProjectBox>
+        <ProjectBox>
+            <p>Information about project</p>
+        </ProjectBox>
+        <ProjectBox>
+            <p>Information about project</p>
+        </ProjectBox>
+        <ProjectBox>
+            <p>Information about project</p>
+        </ProjectBox>
+        <ProjectBox>
+            <p>Information about project</p>
+        </ProjectBox>
+    </div>
+    </div>
+</Layout>
+
+<!-- <Layout title="Projects">
     <div class="flex flex-col items-center justify-start gap-10 mb-20">
         <ProjectBox 
          title="Ball Sorting in Tubes"
@@ -49,7 +102,7 @@ import ProjectBox from "../components/ProjectBox.astro";
             <p>Information about project</p>
         </ProjectBox>
     </div>
-</Layout>
+</Layout> -->
 
 <style>
 
@@ -64,10 +117,21 @@ import ProjectBox from "../components/ProjectBox.astro";
         white-space: normal;
     }
 
-    .container {
-        display: flex;
-        max-width: 100%;
-        padding: 30px;
+    .grid {
+        border-color: var(--matrix-green);
+        border-width: 2px;
+        border-radius: 20px;
+        padding: 20px;
+        display: grid;
+        justify-items: center;
+        row-gap: 50px;
+        column-gap: 100px;
+        grid-template-columns: repeat(1, 1fr);
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+    }
+
+    .hover\:shadow-glow:hover {
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
     }
 
     .demo {

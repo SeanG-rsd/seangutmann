@@ -43,47 +43,58 @@ const { title, description, iconPath } = Astro.props;
 
     .dropdown {
         flex-direction: row;
+        transition: transform 300ms ease-in-out;
+        border-color: var(--matrix-green);
+        border-width: 2px;
+        border-radius: 20px;
+    }
+
+    .dropdown:hover {
+      transform: translateY(-5px);
+      animation-duration: 300ms;
+      box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
     }
 
     .dropdown .info {
-      background-color: white;
+      background-color: black;
       width: 100%;
       min-width: 1000px;
       max-width: 1000px;
-      min-height: 200px;
+      min-height: 300px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      gap: 100px;
       border-radius: 20px;
       transition: border-radius 0s ease-in-out 0.5s;
     }
 
     .dropdown .info.open {
+      grid-column: span 2;
       border-radius: 20px 20px 0 0;
       transition: border-radius 0s linear 0s;
     }
   
     .dropdown p{
       display: block;
-      color: black;
+      color: var(--matrix-green);
       text-decoration: none;
       padding: 10px 15px;
     }
   
     .dropdown .content {
-    max-height: 0;
-    overflow: hidden;
-    background-color: white;
-    transition: max-height 0.5s ease-in-out, padding;
-    width: 100%;
-    min-width: 1000px;
-    max-width: 1000px;
-    border-radius: 0 0 20px 20px;
+      max-height: 0;
+      overflow: hidden;
+      background-color: black;
+      transition: max-height 0.5s ease-in-out, padding;
+      width: 100%;
+      min-width: 1000px;
+      max-width: 1000px;
+      border-radius: 0 0 20px 20px;
     }
 
     .dropdown .content.open {
       max-height: 10000px;
+      
     }
 </style>
