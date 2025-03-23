@@ -6,8 +6,80 @@ const projects = [
     {
         title: "Ball Sorting in Tubes",
         description: "2D Puzzle Game",
+        longDescription: "Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store. This is a test to see if the text will go to a new line or not.",
+        github: "https://github.com/SeanG-rsd/BallSort",
+        liveURL: "https://apps.apple.com/us/app/ball-sorting-in-tubes/id6447139347",
+        iconPath: "src/assets/icons/BallSortIcon.png",
+        technologiesUsed: ["Unity", "iOS", "C#",],
         projectType: "mobile",
-        orientation: "vertical"
+        orientation: "vertical",
+        demos: ["../src/assets/demos/BallSortDemo.png", "../src/assets/demos/BallSortDemo.png"],
+        demoCaptions: ["Caption", "Caption"]
+    },
+    {
+        title: "Tank Battles - Online",
+        description: "3D Multiplayer Shooter",
+        longDescription: "Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store. This is a test to see if the text will go to a new line or not.",
+        github: "https://github.com/SeanG-rsd/BattleTanks",
+        liveURL: "https://apps.apple.com/us/app/tank-battles-online/id6467826765",
+        iconPath: "src/assets/icons/BattleTanksIcon.png",
+        technologiesUsed: ["Unity", "iOS", "C#"],
+        projectType: "mobile",
+        orientation: "horizontal",
+        demos: ["../src/assets/demos/BattleTanksDemo.png", "../src/assets/demos/BattleTanksDemo.png", "../src/assets/demos/BattleTanksDemo.png"],
+        demoCaptions: ["Caption", "Caption", "Caption"]
+    },
+    {
+        title: "Everything Calendar",
+        description: "Daily Life Tracker",
+        longDescription: "Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store. This is a test to see if the text will go to a new line or not.",
+        github: "https://github.com/SeanG-rsd/EverythingCalendar",
+        liveURL: "https://apps.apple.com/us/app/everythingcalendar/id6504160364",
+        iconPath: "src/assets/icons/EverythingCalendarIcon.png",
+        technologiesUsed: ["Unity", "iOS", "C#"],
+        projectType: "mobile",
+        orientation: "vertical",
+        demos: ["../src/assets/demos/BallSortDemo.png", "../src/assets/demos/BallSortDemo.png"],
+        demoCaptions: ["Caption", "Caption", "Caption"]
+    },
+    {
+        title: "Chicken Daydreams",
+        description: "Infinite 2D Runner",
+        longDescription: "Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store. This is a test to see if the text will go to a new line or not.",
+        github: "https://github.com/SeanG-rsd/ChickenRun",
+        liveURL: "https://apps.apple.com/us/app/chicken-daydreams/id6686399476",
+        iconPath: "src/assets/icons/ChickenRunIcon.png",
+        technologiesUsed: ["Unity", "iOS", "C#"],
+        projectType: "mobile",
+        orientation: "vertical",
+        demos: ["../src/assets/demos/BallSortDemo.png", "../src/assets/demos/BallSortDemo.png"],
+        demoCaptions: ["Caption", "Caption", "Caption"]
+    },
+    {
+        title: "In Between Worlds",
+        description: "Infinite 2D Sidescroller",
+        longDescription: "Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store. This is a test to see if the text will go to a new line or not.",
+        github: "https://github.com/SeanG-rsd/InBetweenWorlds",
+        liveURL: "https://apps.apple.com/us/app/in-between-worlds/id6475752584",
+        iconPath: "src/assets/icons/InBetweenWorldsIcon.png",
+        technologiesUsed: ["Unity", "iOS", "C#"],
+        projectType: "mobile",
+        orientation: "horizontal",
+        demos: ["../src/assets/demos/BattleTanksDemo.png", "../src/assets/demos/BattleTanksDemo.png", "../src/assets/demos/BattleTanksDemo.png"],
+        demoCaptions: ["Caption this caption is meant to be very long to see if it overlaps Caption this caption is meant to be very long to see if it overlaps", "Caption", "Caption"]
+    },
+    {
+        title: "Porfolio Website",
+        description: "Display of Projects",
+        longDescription: "Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store. This is a test to see if the text will go to a new line or not.",
+        github: "https://github.com/SeanG-rsd/seangutmann",
+        liveURL: "https://seangutmann.com",
+        iconPath: "../src/assets/demos/WebsiteDemo.png",
+        technologiesUsed: ["Unity", "iOS", "C#"],
+        projectType: "website",
+        orientation: "horizontal",
+        demos: ["../src/assets/demos/WebsiteDemo.png",],
+        demoCaptions: ["Homepage"]
     },
 ];
 ---
@@ -18,49 +90,11 @@ const projects = [
             <p>cd ./projects/</p>
         </div>
     <div class="grid bg-black bg-opacity-70">
-        <ProjectBox 
-         title="Ball Sorting in Tubes"
-         description="This is the description for Ball Sort. Testing to see how long the text will go before it automatically wraps to a new line upder the title"
-         iconPath="../src/assets/ball-sort-icon.png">
-            <div class="container gap-8">
-                <div class="flex flex-col">
-                    <h1>Simple Puzzle Game</h1>
-                    <p>
-                        Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store.
-                        This is a test to see if the text will go to a new line or not.
-                    </p>
-                </div>
-                <img src="../src/assets/demos/BallSortDemo.png" class="demo"/>
-                <img src="../src/assets/demos/BallSortDemo.png" class="demo"/>
-            </div>
-        </ProjectBox>
-        <ProjectBox title="Tank Battles - Online" iconPath="../src/assets/battle-tanks-icon.png">
-            <div class="container">
-                <div class="flex flex-col">
-                    <h1>Simple Puzzle Game</h1>
-                    <p>
-                        Ball Sorting in Tubes has amassed hundreds of downloads on the iOS App Store.
-                        This is a test to see if the text will go to a new line or not.
-                    </p>
-                </div>
-                <div class="flex flex-col gap-8">
-                    <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
-                    <img src="../src/assets/demos/BattleTanksDemo.png" class="demo-h"/>
-                </div>
-            </div>
-        </ProjectBox>
-        <ProjectBox>
-            <p>Information about project</p>
-        </ProjectBox>
-        <ProjectBox>
-            <p>Information about project</p>
-        </ProjectBox>
-        <ProjectBox>
-            <p>Information about project</p>
-        </ProjectBox>
-        <ProjectBox>
-            <p>Information about project</p>
-        </ProjectBox>
+        {projects.map((project) => (
+            <ProjectBox 
+                project={project}
+            />
+        ))}
     </div>
     </div>
 </Layout>
@@ -82,12 +116,10 @@ const projects = [
         border-color: var(--matrix-green);
         border-width: 2px;
         border-radius: 20px;
-        padding: 20px;
-        display: grid;
-        justify-items: center;
-        row-gap: 50px;
-        column-gap: 100px;
-        grid-template-columns: repeat(1, 1fr);
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
         box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
     }
 
@@ -124,10 +156,10 @@ const projects = [
 
         icon.innerHTML = content.classList.contains("open") 
           ? `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
               </svg>`
           : `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
               </svg>`;
       });
     });

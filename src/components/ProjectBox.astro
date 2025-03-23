@@ -1,6 +1,7 @@
 ---
 
-const { title, description, iconPath } = Astro.props;
+const { project } = Astro.props;
+const { title, description, longDescription, iconPath, projectType, orientation, github, liveURL, technologiesUsed, demos, demoCaptions } = project;
 ---
 
 <div class="dropdown">
@@ -12,14 +13,35 @@ const { title, description, iconPath } = Astro.props;
             </div>
         <div class="flex flex-col w-1/2 justify-center">
             <h1>{title}</h1>
-            <p>{description}</p>
+            <p class="mb-2">{description}</p>
+            <div class="flex justify-evenly">
+              <a href={github} target="_blank" class="technology">GitHub</a>
+              <a href={liveURL} target="_blank" class="technology">Live Demo</a>
+            </div>
         </div>
-        <div class="w-1/4 flex justify-end mr-12">
+        <div class="w-1/4 flex justify-center">
           <img src={iconPath} class="icon"></img>
         </div>
     </button>
     <div id="dropdown-content" class="content">
-        <slot/>
+      <div class={`${projectType}-${orientation} gap-8`}>
+        <div class="flex flex-col items-center">
+            <p>{longDescription}</p>
+            <div class="technologies">
+              {technologiesUsed.map((tech: string) => (
+                <p class="technology">{tech}</p>
+              ))}
+            </div>
+        </div>
+        <div class="demo-content">
+          {demos.map((demo: string, index: number) => (
+            <div>
+              <img src={demo}/>
+              <p>{demoCaptions[index]}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
 </div>
 
@@ -32,13 +54,10 @@ const { title, description, iconPath } = Astro.props;
       font-size: 22px;
     }
 
-    p {
-
-    }
-
     .icon {
-        max-width: 120px;
-        max-height: 120px;
+        width: 60%;
+        height: 60%;
+        border-radius: 25%;
     }
 
     .dropdown {
@@ -58,7 +77,6 @@ const { title, description, iconPath } = Astro.props;
     .dropdown .info {
       background-color: black;
       width: 100%;
-      min-width: 1000px;
       max-width: 1000px;
       min-height: 300px;
       display: flex;
@@ -70,7 +88,6 @@ const { title, description, iconPath } = Astro.props;
     }
 
     .dropdown .info.open {
-      grid-column: span 2;
       border-radius: 20px 20px 0 0;
       transition: border-radius 0s linear 0s;
     }
@@ -88,13 +105,55 @@ const { title, description, iconPath } = Astro.props;
       background-color: black;
       transition: max-height 0.5s ease-in-out, padding;
       width: 100%;
-      min-width: 1000px;
       max-width: 1000px;
       border-radius: 0 0 20px 20px;
     }
 
     .dropdown .content.open {
       max-height: 10000px;
-      
+    }
+
+    .demo-content {
+      padding: 20px;
+      display: grid;
+      justify-items: center;
+      row-gap: 50px;
+      column-gap: 100px;
+    }
+
+    .mobile-vertical .demo-content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mobile-horizontal .demo-content {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .web-vertical {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .web-horizontal {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .technologies {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: start;
+      padding: 10px 20px 10px 20px;
+      gap: 10px;
+    }
+
+    .technology {
+      border-width: 2px;
+      border-radius: 10px;
+      border-color: var(--matrix-green);
+    }
+
+    a.technology{
+      padding: 10px 10px;
+        white-space: normal;
     }
 </style>
