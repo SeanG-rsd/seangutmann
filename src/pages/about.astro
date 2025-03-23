@@ -3,69 +3,74 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="About">
-    <div>
-    <!-- Objective -->
-    	<h1 class="p-4 text-center">
-			Driven computer science student with a curiosity and passion for learning, </br>
-			looking for opportunities to gain more technical skills and expand knowledge.
-		</h1>
-
-	<div>
-        <h1 class="section-title">Education</h1>
-        <div class="p-4 ml-4 flex gap-4">
-            <p class="info">Sept 2024 to June 2028</br></br>Sept 2020 to June 2024</p>
-            <p class="info">
-                Pursuing a Bachelor of Science in Computer Science Systems</br>
-                4.0 GPA, Oregon State University</br>
-                High School Diploma, Cedarcrest Highschool</br>
-                4.0 GPA, Valedictorian
-			</p>
+	<div class="p-10">
+        <div>
+            <p>cd ./about/</p>
         </div>
-    </div>
-    <!-- Skills -->
-    <div>
-        <h1 class="section-title">Technical Skills</h2>
-        <ul class="list-disc p-4 ml-8">
-            <li>Proficient in C#, Java, Python, and C++</li>
-            <li>Familiar with Git and its functions</li>
-            <li>Experienced in Unity 2D and 3D, including online multiplayer</li>
-            <li>Experience in publishing apps on the iOS App Store </li>
-            <li>Machine Learning, Deep Learning</li>
-			<li>Flutter/Andriod Studio</li>
-        </ul>
-    </div>
-    
-    <div>
-        <h1 class="section-title">Experience</h2>
-        <div class="p-4 ml-4 flex gap-4">
-            <p class="info">October 2024 to Present</br></br></br></br></br></br></br>April 2021 to Present</p>
-            <p class="info">
-				Star Labs (URSA Engage)</br>
-				Research Assistant in Maching Learning</br>
-				Currently working on a project with two other students that implements a large language model into an app, using it to</br>
-				provide nutrition advice to users. Implemented RAG (Retrieval Augmented Generation) using Python to improve the</br>
-				accuracy of the LLM when generating recipes, and to produce results based on the documents embedded into the</br>
-				database.</br></br>
-
-                Nutron Labs</br>
-                Co-Founder</br>
-                In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps </br>
-                on the iOS App Store. These products, all developed in Unity, required a different set of skills to </br> 
-                develop each and amassed over 400 downloads among all of them. </br>
-			</p>
-        </div>
-    </div>
-    
-	<div>
-        <h1 class="section-title">Clubs and Leadership</h2>
-        <div class="p-4 ml-4 flex gap-4">
-            <ul class="list-disc p-4">
-				<li>Current Webmaster OSU App Development Club</li>
-				<li>Active member in the Google Developer Club and ACM</li>
+    	<div class="grid bg-black bg-opacity-70">
+			<!-- Objective -->
+			<h1 class="p-4 text-center">
+				Driven computer science student with a curiosity and passion for learning, </br>
+				looking for opportunities to gain more technical skills and expand knowledge.
+			</h1>
+	
+		<div>
+			<h1 class="section-title">Education</h1>
+			<div class="p-4 ml-4 flex gap-4">
+				<p class="info">Sept 2024 to June 2028</br></br>Sept 2020 to June 2024</p>
+				<p class="info">
+					Pursuing a Bachelor of Science in Computer Science Systems</br>
+					4.0 GPA, Oregon State University</br>
+					High School Diploma, Cedarcrest Highschool</br>
+					4.0 GPA, Valedictorian
+				</p>
+			</div>
+		</div>
+		<!-- Skills -->
+		<div>
+			<h1 class="section-title">Technical Skills</h2>
+			<ul class="list-disc p-4 ml-8">
+				<li>Proficient in C#, Java, Python, and C++</li>
+				<li>Familiar with Git and its functions</li>
+				<li>Experienced in Unity 2D and 3D, including online multiplayer</li>
+				<li>Experience in publishing apps on the iOS App Store </li>
+				<li>Machine Learning, Deep Learning</li>
+				<li>Flutter/Andriod Studio</li>
 			</ul>
-        </div>
+		</div>
+		
+		<div>
+			<h1 class="section-title">Experience</h2>
+			<div class="p-4 ml-4 flex gap-4">
+				<p class="info">October 2024 to Present</br></br></br></br></br></br></br></br>April 2021 to Present</p>
+				<p class="info">
+					Star Labs (URSA Engage)</br>
+					Research Assistant in Maching Learning</br>
+					Currently working on a project with two other students that implements a large language model into an app, using it to</br>
+					provide nutrition advice to users. Implemented RAG (Retrieval Augmented Generation) using Python to improve the</br>
+					accuracy of the LLM when generating recipes, and to produce results based on the documents embedded into the</br>
+					database.</br></br>
+	
+					Nutron Labs</br>
+					Co-Founder</br>
+					In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps </br>
+					on the iOS App Store. These products, all developed in Unity, required a different set of skills to </br> 
+					develop each and amassed over 400 downloads among all of them. </br>
+				</p>
+			</div>
+		</div>
+		
+		<div>
+			<h1 class="section-title">Clubs and Leadership</h2>
+			<div class="p-4 ml-4 flex gap-4">
+				<ul class="list-disc p-4">
+					<li>Current Webmaster OSU App Development Club</li>
+					<li>Active member in the Google Developer Club and ACM</li>
+				</ul>
+			</div>
+		</div>
+    	</div>
     </div>
-
 </div>
 </Layout>
 
@@ -82,14 +87,22 @@ import Layout from "../layouts/Layout.astro";
 	.info {
 		color: var(--matrix-green);
 	}
+	.grid {
+        border-color: var(--matrix-green);
+        border-width: 2px;
+        border-radius: 20px;
+        padding: 20px;
+        display: grid;
+        justify-items: start;
+        row-gap: 50px;
+        column-gap: 100px;
+        grid-template-columns: repeat(1, 1fr);
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+    }
 
-	#hero {
-		display: flex;
-		align-items: start;
-		flex-direction: column;
-		justify-content: center;
-		padding: 16px;
-	}
+	.hover\:shadow-glow:hover {
+        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+    }
 
 	h1 {
 		font-family: 'Fira Code', monospace;
@@ -99,139 +112,8 @@ import Layout from "../layouts/Layout.astro";
 
 	p {
 		font-family: 'Fira Code', monospace;
-		font-size: 20px;
+		padding: 10px 10px;
 		color: var(--matrix-green);
 		font-weight: normal;
-	}
-
-	#links {
-		display: flex;
-		gap: 16px;
-	}
-
-	#links a {
-		display: flex;
-		align-items: center;
-		padding: 10px 12px;
-		color: #111827;
-		text-decoration: none;
-		transition: color 0.2s;
-	}
-
-	#links a:hover {
-		color: rgb(78, 80, 86);
-	}
-
-	#links a svg {
-		height: 1em;
-		margin-left: 8px;
-	}
-
-	#links a.button {
-		color: white;
-		background: linear-gradient(83.21deg, #3245ff 0%, #bc52ee 100%);
-		box-shadow:
-			inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-			inset 0 -2px 0 rgba(0, 0, 0, 0.24);
-		border-radius: 10px;
-	}
-
-	#links a.button:hover {
-		color: rgb(230, 230, 230);
-		box-shadow: none;
-	}
-
-	pre {   
-		font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
-			'DejaVu Sans Mono', monospace;
-		font-weight: normal;
-		background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin: 0;
-	}
-
-	h2 {
-		margin: 0 0 1em;
-		font-weight: normal;
-		color: #111827;
-		font-size: 20px;
-	}
-
-	p {
-		color: #111827;
-		font-size: 16px;
-		line-height: 24px;
-		letter-spacing: -0.006em;
-		margin: 0;
-	}
-
-	code {
-		display: inline-block;
-		background:
-			linear-gradient(66.77deg, #f3cddd 0%, #f5cee7 100%) padding-box,
-			linear-gradient(155deg, #d83333 0%, #f041ff 18%, #f5cee7 45%) border-box;
-		border-radius: 8px;
-		border: 1px solid transparent;
-		padding: 6px 8px;
-	}
-
-	.box {
-		padding: 16px;
-		background: rgba(255, 255, 255, 1);
-		border-radius: 16px;
-		border: 1px solid white;
-	}
-
-	#news {
-		position: absolute;
-		bottom: 16px;
-		right: 16px;
-		max-width: 300px;
-		text-decoration: none;
-		transition: background 0.2s;
-		backdrop-filter: blur(50px);
-	}
-
-	#news:hover {
-		background: rgba(255, 255, 255, 0.55);
-	}
-
-	@media screen and (max-height: 368px) {
-		#news {
-			display: none;
-		}
-	}
-
-	@media screen and (max-width: 768px) {
-		#container {
-			display: flex;
-			flex-direction: column;
-		}
-
-		#hero {
-			display: block;
-			padding-top: 10%;
-		}
-
-		#links {
-			flex-wrap: wrap;
-		}
-
-		#links a.button {
-			padding: 14px 18px;
-		}
-
-		#news {
-			right: 16px;
-			left: 16px;
-			bottom: 2.5rem;
-			max-width: 100%;
-		}
-
-		h1 {
-			line-height: 1.5;
-		}
 	}
 </style>
