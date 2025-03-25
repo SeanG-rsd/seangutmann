@@ -6,61 +6,68 @@ import Layout from "../layouts/Layout.astro";
 	<div class="p-10">
         <div>
             <p>cd ./about/</p>
-        </div>
+		</div>
     	<div class="grid bg-black bg-opacity-70">
 			<!-- Objective -->
 			<h1 class="p-4 text-center">
-				Driven computer science student with a curiosity and passion for learning, </br>
+				Driven computer science student with a curiosity and passion for learning,
 				looking for opportunities to gain more technical skills and expand knowledge.
 			</h1>
 	
-		<div>
-			<h1 class="section-title">Education</h1>
-			<div class="p-4 ml-4 flex gap-4">
-				<p class="info">Sept 2024 to June 2028</br></br>Sept 2020 to June 2024</p>
-				<p class="info">
-					Pursuing a Bachelor of Science in Computer Science Systems</br>
-					4.0 GPA, Oregon State University</br>
-					High School Diploma, Cedarcrest Highschool</br>
-					4.0 GPA, Valedictorian
-				</p>
+			<div>
+				<h1 class="section-title">Experience</h2>
+				<div class="p-4 ml-4 flex flex-col gap-4">
+					<div class="flex">
+						<p class="info">Sept 2024 to June 2028</p>
+						<p>Pursuing a Bachelor of Science in Computer Science Systems</br>
+							4.0 GPA, Oregon State University</p>
+					</div>
+					<div class="flex">
+						<p class="info">Sept 2020 to June 2024</p>
+						<p>High School Diploma, Cedarcrest Highschool</br>
+							4.0 GPA, Valedictorian</p>
+					</div>
+				</div>
 			</div>
-		</div>
-		<!-- Skills -->
-		<div>
-			<h1 class="section-title">Technical Skills</h2>
-			<ul class="list-disc p-4 ml-8">
+
+			<!-- Skills -->
+			<div>
+				<h1 class="section-title">Technical Skills</h2>
+				<ul class="list-disc p-4 ml-8">
 				<li>Proficient in C#, Java, Python, and C++</li>
 				<li>Familiar with Git and its functions</li>
 				<li>Experienced in Unity 2D and 3D, including online multiplayer</li>
 				<li>Experience in publishing apps on the iOS App Store </li>
 				<li>Machine Learning, Deep Learning</li>
 				<li>Flutter/Andriod Studio</li>
-			</ul>
-		</div>
-		
-		<div>
-			<h1 class="section-title">Experience</h2>
-			<div class="p-4 ml-4 flex gap-4">
-				<p class="info">October 2024 to Present</br></br></br></br></br></br></br></br>April 2021 to Present</p>
-				<p class="info">
-					Star Labs (URSA Engage)</br>
-					Research Assistant in Maching Learning</br>
-					Currently working on a project with two other students that implements a large language model into an app, using it to</br>
-					provide nutrition advice to users. Implemented RAG (Retrieval Augmented Generation) using Python to improve the</br>
-					accuracy of the LLM when generating recipes, and to produce results based on the documents embedded into the</br>
-					database.</br></br>
-	
-					Nutron Labs</br>
-					Co-Founder</br>
-					In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps </br>
-					on the iOS App Store. These products, all developed in Unity, required a different set of skills to </br> 
-					develop each and amassed over 400 downloads among all of them. </br>
-				</p>
+				</ul>
 			</div>
-		</div>
 		
-		<div>
+			<div>
+				<h1 class="section-title">Experience</h2>
+					<div class="p-4 ml-4 flex flex-col gap-4">
+						<div class="flex">
+						<p class="info">October 2024 to Present</p>
+						<p>Star Labs (URSA Engage)</br>
+						Research Assistant in Maching Learning</br>
+						Currently working on a project with two other students that implements a large language model into an app, using it to
+						provide nutrition advice to users. Implemented RAG (Retrieval Augmented Generation) using Python to improve the
+						accuracy of the LLM when generating recipes, and to produce results based on the documents embedded into the
+						database.</p>
+						</div>
+						<div class="flex">
+							<p class="info">April 2021 to Present</p>
+							<p>Nutron Labs</br>
+						Co-Founder</br>
+						In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps
+						on the iOS App Store. These products, all developed in Unity, required a different set of skills to
+						develop each and amassed over 500 downloads among all of them.
+							</p>
+						</div>
+					</div>
+				</div>
+		
+			<div>
 			<h1 class="section-title">Clubs and Leadership</h2>
 			<div class="p-4 ml-4 flex gap-4">
 				<ul class="list-disc p-4">
@@ -68,10 +75,9 @@ import Layout from "../layouts/Layout.astro";
 					<li>Active member in the Google Developer Club and ACM</li>
 				</ul>
 			</div>
-		</div>
+			</div>
     	</div>
     </div>
-</div>
 </Layout>
 
 <style>
@@ -85,22 +91,17 @@ import Layout from "../layouts/Layout.astro";
 	}
 
 	.info {
-		color: var(--matrix-green);
+		white-space: nowrap;
 	}
 	.grid {
         border-color: var(--matrix-green);
         border-width: 2px;
         border-radius: 20px;
         padding: 20px;
-        display: grid;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
         justify-items: start;
-        row-gap: 50px;
-        column-gap: 100px;
-        grid-template-columns: repeat(1, 1fr);
-        box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
-    }
-
-	.hover\:shadow-glow:hover {
         box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
     }
 

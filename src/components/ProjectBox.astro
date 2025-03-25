@@ -24,19 +24,19 @@ const { title, description, longDescription, iconPath, projectType, orientation,
         </div>
     </button>
     <div id="dropdown-content" class="content">
-      <div class={`${projectType}-${orientation} gap-8`}>
-        <div class="flex flex-col items-center">
-            <p>{longDescription}</p>
-            <div class="technologies">
-              {technologiesUsed.map((tech: string) => (
-                <p class="technology">{tech}</p>
-              ))}
-            </div>
+      <div class="flex flex-col items-center">
+        <p>{longDescription}</p>
+        <div class="technologies">
+          {technologiesUsed.map((tech: string) => (
+            <p class="technology">{tech}</p>
+          ))}
         </div>
+    </div>
+      <div class={`${projectType}-${orientation} gap-8`}>
         <div class="demo-content">
           {demos.map((demo: string, index: number) => (
             <div>
-              <img src={demo}/>
+              <img src={demo} class="demo"/>
               <p>{demoCaptions[index]}</p>
             </div>
           ))}
@@ -116,11 +116,15 @@ const { title, description, longDescription, iconPath, projectType, orientation,
     .demo-content {
       padding: 20px;
       display: grid;
-      justify-items: center;
+      justify-items: stretch;
       row-gap: 50px;
       column-gap: 100px;
     }
 
+    
+    .demo {
+      justify-self: stretch;
+    }
     .mobile-vertical .demo-content {
       grid-template-columns: repeat(2, 1fr);
     }
