@@ -1,7 +1,7 @@
 ---
 
 const { project } = Astro.props;
-const { title, description, longDescription, iconPath, projectType, orientation, github, liveURL, technologiesUsed, demos, demoCaptions } = project;
+const { title, description, longDescription, iconPath, projectType, orientation, github, liveURL, technologiesUsed, demos, demoCaptions, dateRange } = project;
 ---
 
 <div class="dropdown">
@@ -13,6 +13,7 @@ const { title, description, longDescription, iconPath, projectType, orientation,
             </div>
         <div class="flex flex-col w-1/2 justify-center">
             <h1>{title}</h1>
+            <p class="">{dateRange}</p>
             <p class="mb-2">{description}</p>
             <div class="flex justify-evenly">
               <a href={github} target="_blank" class="technology">GitHub</a>
