@@ -15,12 +15,13 @@ import Layout from "../layouts/Layout.astro";
 			</h1>
 	
 			<div>
-				<h1 class="section-title">Experience</h2>
+				<h1 class="section-title">Education</h2>
 				<div class="p-4 ml-4 flex flex-col gap-4">
 					<div class="flex">
 						<p class="info">Sept 2024 to June 2028</p>
 						<p>Pursuing a Bachelor of Science in Computer Science Systems</br>
-							4.0 GPA, Oregon State University</p>
+							Oregon State University</br>
+							4.0 GPA, Research Fellow, Dean's List</p>
 					</div>
 					<div class="flex">
 						<p class="info">Sept 2020 to June 2024</p>
@@ -34,7 +35,7 @@ import Layout from "../layouts/Layout.astro";
 			<div>
 				<h1 class="section-title">Technical Skills</h2>
 				<ul class="list-disc p-4 ml-8">
-				<li>Proficient in C#, Java, Python, and C++</li>
+				<li>Proficient in C#, Java, Python, C++, Dart, HTML, CSS, Javascript, and C</li>
 				<li>Familiar with Git and its functions</li>
 				<li>Experienced in Unity 2D and 3D, including online multiplayer</li>
 				<li>Experience in publishing apps on the iOS App Store </li>
@@ -47,17 +48,24 @@ import Layout from "../layouts/Layout.astro";
 				<h1 class="section-title">Experience</h2>
 					<div class="p-4 ml-4 flex flex-col gap-4">
 						<div class="flex">
-						<p class="info">October 2024 to Present</p>
-						<p>Star Labs (URSA Engage)</br>
+							<p class="info">October 2024 to Present</p>
+							<p class="description">Star Labs (URSA Engage)</br>
 						Research Assistant in Maching Learning</br>
-						Currently working on a project with two other students that implements a large language model into an app, using it to
-						provide nutrition advice to users. Implemented RAG (Retrieval Augmented Generation) using Python to improve the
-						accuracy of the LLM when generating recipes, and to produce results based on the documents embedded into the
-						database.</p>
+						I am working with two other students on a mobile app named Meala that uses a large language model (LLM) to provide
+						personalized nutrition advice. I implemented Retrieval-Augmented Generation (RAG) in Python to improve recipe
+						accuracy using embedded documents. In addition, I redesigned and implemented a user interface in Flutter that displays
+						recipes in a simple, user-friendly format to enhance the user experience.</p>
+						</div>
+						<div class="flex">
+						<p class="info">June 2025 to Present</p>
+						<p class="description">City of Duvall</br>
+						Seasonal Maintenance Worker</br>
+						Maintain city parks, wetlands, and roadside areas by week-whacking, mowing, and clearing brush. Drive city vehicles to
+						work sites and operate landscaping equipment while following safety procedures.</p>
 						</div>
 						<div class="flex">
 							<p class="info">April 2021 to Present</p>
-							<p>Nutron Labs</br>
+							<p class="description">Nutron Labs</br>
 						Co-Founder</br>
 						In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps
 						on the iOS App Store. These products, all developed in Unity, required a different set of skills to
@@ -71,8 +79,10 @@ import Layout from "../layouts/Layout.astro";
 			<h1 class="section-title">Clubs and Leadership</h2>
 			<div class="p-4 ml-4 flex gap-4">
 				<ul class="list-disc p-4">
-					<li>Current Webmaster OSU App Development Club</li>
-					<li>Active member in the Google Developer Club and ACM</li>
+					<li>Current Webmaster at OSU App Development Club</li>
+					<li>Current Tech Officer at OSU Google Developer Student Club</li>
+					<li>BeaverHacks 2025 3rd Place Winner of ACM Track for educational technology.</li>
+					<li>Research Fellow: Presented at the Spring Poster Symposium at Oregon State University for URSA Engage.</li>
 				</ul>
 			</div>
 			</div>
@@ -92,6 +102,11 @@ import Layout from "../layouts/Layout.astro";
 
 	.info {
 		white-space: nowrap;
+		width: 20%;
+	}
+
+	.description {
+		width: 80%;
 	}
 	.grid {
         border-color: var(--matrix-green);
