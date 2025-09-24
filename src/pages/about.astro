@@ -19,13 +19,16 @@ import Layout from "../layouts/Layout.astro";
 				<div class="p-4 ml-4 flex flex-col gap-4">
 					<div class="flex">
 						<p class="info">Sept 2024 to June 2028</p>
-						<p>Pursuing a Bachelor of Science in Computer Science Systems</br>
+						<p class="description">Pursuing a Bachelor of Science in Computer Science Systems</br>
 							Oregon State University</br>
-							4.0 GPA, Research Fellow, Dean's List</p>
+							4.0 GPA, Research Fellow, Dean's List</br></br>
+							Relevant Coursework: Data Structures, Web Development, Intro to Computer Science II,
+							Discrete Math, Calculus 1 & 2, Intro to Matrices and Series
+						</p>
 					</div>
 					<div class="flex">
 						<p class="info">Sept 2020 to June 2024</p>
-						<p>High School Diploma, Cedarcrest Highschool</br>
+						<p class="description">High School Diploma, Cedarcrest Highschool</br>
 							4.0 GPA, Valedictorian</p>
 					</div>
 				</div>
@@ -35,42 +38,52 @@ import Layout from "../layouts/Layout.astro";
 			<div>
 				<h1 class="section-title">Technical Skills</h2>
 				<ul class="list-disc p-4 ml-8">
-				<li>Proficient in C#, Java, Python, C++, Dart, HTML, CSS, Javascript, and C</li>
-				<li>Familiar with Git and its functions</li>
-				<li>Experienced in Unity 2D and 3D, including online multiplayer</li>
-				<li>Experience in publishing apps on the iOS App Store </li>
-				<li>Machine Learning, Deep Learning</li>
-				<li>Flutter/Andriod Studio</li>
+				<li><span style="font-weight:bold">Languages:</span> C#, Java, C++, Python, Dart, HTML, CSS, JavaScript</li>
+				<li><span style="font-weight:bold">Frameworks & Libraries:</span> Unity (2D and 3D), Flutter, React Native, Astro, FastAPI</li>
+				<li><span style="font-weight:bold">Developer Tools:</span> Git, Xcode, Firebase, Android Studio, Figma, Notion, Photoshop</li>
+				<li><span style="font-weight:bold">Areas of Knowledge:</span> Mobile App Publishing, Machine Learning, Deep Learning</li>
 				</ul>
 			</div>
 		
 			<div>
 				<h1 class="section-title">Experience</h2>
-					<div class="p-4 ml-4 flex flex-col gap-4">
+					<div class="p-4 ml-4 flex flex-col gap-2">
 						<div class="flex">
 							<p class="info">October 2024 to Present</p>
-							<p class="description">Star Labs (URSA Engage)</br>
-						Research Assistant in Maching Learning</br>
-						I am working with two other students on a mobile app named Meala that uses a large language model (LLM) to provide
-						personalized nutrition advice. I implemented Retrieval-Augmented Generation (RAG) in Python to improve recipe
-						accuracy using embedded documents. In addition, I redesigned and implemented a user interface in Flutter that displays
-						recipes in a simple, user-friendly format to enhance the user experience.</p>
+							<p class="description">Undergraduate Research Assistant</br>
+													Oregon State University, Corvallis, OR
 						</div>
-						<div class="flex">
-						<p class="info">June 2025 to Present</p>
-						<p class="description">City of Duvall</br>
-						Seasonal Maintenance Worker</br>
-						Maintain city parks, wetlands, and roadside areas by week-whacking, mowing, and clearing brush. Drive city vehicles to
-						work sites and operate landscaping equipment while following safety procedures.</p>
-						</div>
+						<ul class="list-disc p-2 ml-8">
+							<li>Collaborating with two other students on a mobile app named Meala, using a large language model (LLM) to provide
+							personalized nutrition advice and assist users in reaching nutritional goals.</li>
+							<li>Implemented Retrieval-Augmented Generation (RAG) in Python to optimize recipe accuracy using embedded
+							documents.</li>
+							<li>Redesigned and implemented a user interface in Flutter that displays recipes in a simple, user-friendly format to
+							enhance the user experience.</li>
+						</ul>
 						<div class="flex">
 							<p class="info">April 2021 to Present</p>
-							<p class="description">Nutron Labs</br>
-						Co-Founder</br>
-						In my time at Nutron Labs, I was the sole developer in the publishing and development 5 apps
-						on the iOS App Store. These products, all developed in Unity, required a different set of skills to
-						develop each and amassed over 500 downloads among all of them.
+							<p class="description">Co-Founder</br>
+						Nutron Labs LLC, Duvall, WA
 							</p>
+						</div>
+						<ul class="list-disc p-2 ml-8">
+							<li>Developer responsible for designing, developing, and publishing five diverse apps on the iOS App Store and Google
+							Play Store, all created in Unity with a combined 1000+ downloads</li>
+							<li>Apps consist of 2D puzzle games, a 3D multiplayer game, and endless scrollers.</li>
+							<li>Designed and developed using various tools including Figma, Notion, Aseprite, Photon Network, Playfab, Unity
+							Analytics, and Photoshop.</li>
+						</ul>
+						<div>
+						<div class="flex">
+						<p class="info">June 2025 to September 2025</p>
+						<p class="description">Seasonal Maintenance Worker</br>
+						City of Duvall, Duvall, WA</p>
+						</div>
+						<ul class="list-disc p-2 ml-8">
+							<li>Maintained city parks, wetlands, and roadside areas by weed-whacking, mowing, and clearing brush.</li>
+							<li>Drove city vehicles to work sites and operate landscaping equipment while following safety procedures.</li>
+						</ul>
 						</div>
 					</div>
 				</div>
@@ -102,11 +115,11 @@ import Layout from "../layouts/Layout.astro";
 
 	.info {
 		white-space: nowrap;
-		width: 20%;
+		width: 30%;
 	}
 
 	.description {
-		width: 80%;
+		width: 70%;
 	}
 	.grid {
         border-color: var(--matrix-green);
