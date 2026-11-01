@@ -1,0 +1,429 @@
+---
+import type { Contribution, LeetCodeStats, WakaTimeStats } from "../../data/stats";
+
+const { github, leetcode, wakatime } = Astro.props as {
+    github: {
+        name: string; login: string; avatar: string; url: string; repos: number; followers: number; since: number;
+        total: number | null; days: Contribution[]; languages: { name: string; value: number; label: string }[];
+    } | null;
+    leetcode: LeetCodeStats | null;
+    wakatime: WakaTimeStats | null;
+};
+
+const shortDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", {
+    month: "short", day: "numeric", year: "numeric", timeZone: "UTC",
+});
+
+// GitHub contribution heatmap: one column per week, Sunday at the top.
+const CELL = 11, GAP = 3, STEP = CELL + GAP, LABEL_H = 16;
+const days = github?.days ?? [];
+const startOffset = days.length ? new Date(days[0].date).getUTCDay() : 0;
+const cells = days.map((day, index) => {
+    const slot = index + startOffset;
+    return { ...day, x: Math.floor(slot / 7) * STEP, y: (slot % 7) * STEP + LABEL_H };
+});
+const weekCount = days.length ? Math.ceil((days.length + startOffset) / 7) : 0;
+const heatWidth = weekCount * STEP - GAP;
+const heatHeight = 7 * STEP - GAP + LABEL_H;
+
+const monthlyTotals = new Map<string, number>();
+const monthLabels: { label: string; x: number }[] = [];
+let lastMonth = "";
+for (const cell of cells) {
+    const month = new Date(cell.date).toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+    const key = cell.date.slice(0, 7);
+    monthlyTotals.set(key, (monthlyTotals.get(key) ?? 0) + cell.count);
+    if (key !== lastMonth) {
+        // Skip a label that would collide with the next one at either end of the range.
+        if (cell.x < heatWidth - 24 && (cell.x > 0 || new Date(cell.date).getUTCDate() < 10)) {
+            monthLabels.push({ label: month, x: cell.x });
+        }
+        lastMonth = key;
+    }
+}
+const monthRows = [...monthlyTotals.entries()].map(([key, count]) => ({
+    month: new Date(`${key}-01`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" }),
+    count,
+}));
+const busiestDay = days.reduce<Contribution | null>((best, day) => (!best || day.count > best.count ? day : best), null);
+const activeDays = days.filter((day) => day.count > 0).length;
+
+const barMax = (rows: { value: number }[]) => Math.max(...rows.map((row) => row.value), 1);
+
+// LeetCode rating line.
+const LINE_W = 340, LINE_H = 96, PAD_X = 10, PAD_Y = 12;
+const history = leetcode?.history ?? [];
+const ratings = history.map((entry) => entry.rating);
+const minRating = Math.min(...ratings), maxRating = Math.max(...ratings);
+const points = history.map((entry, index) => ({
+    ...entry,
+    x: history.length > 1 ? PAD_X + (index / (history.length - 1)) * (LINE_W - PAD_X * 2) : LINE_W / 2,
+    y: maxRating === minRating
+        ? LINE_H / 2
+        : PAD_Y + (1 - (entry.rating - minRating) / (maxRating - minRating)) * (LINE_H - PAD_Y * 2),
+}));
+const solved = leetcode ? leetcode.solved.Easy + leetcode.solved.Medium + leetcode.solved.Hard : 0;
+const difficulties = leetcode
+    ? ([["Easy", "easy"], ["Medium", "medium"], ["Hard", "hard"]] as const).map(([name, key]) => ({ name, key, count: leetcode.solved[name] }))
+    : [];
+---
+
+<div class="stats">
+    {github && (
+        <article class="card widget github reveal">
+            <header class="profile">
+                <img src={github.avatar} alt="" width="72" height="72" loading="lazy" />
+                <div class="who">
+                    <h3>{github.name}</h3>
+                    <a href={github.url} target="_blank" rel="noopener">@{github.login}</a>
+                </div>
+                <dl class="figures">
+                    {github.total !== null && <div><dd>{github.total.toLocaleString("en-US")}</dd><dt>contributions, past year</dt></div>}
+                    <div><dd>{github.repos}</dd><dt>public repos</dt></div>
+                    <div><dd>{activeDays}</dd><dt>active days</dt></div>
+                </dl>
+            </header>
+
+            {cells.length > 0 && (
+                <div class="heat-scroll" data-scroll-end>
+                    <svg class="heat" viewBox={`0 0 ${heatWidth} ${heatHeight}`} style={`min-width:${heatWidth}px`} role="img"
+                        aria-label={`${github.total} GitHub contributions over the past year. The table below lists monthly totals.`}>
+                        {monthLabels.map((month) => <text x={month.x} y="10" class="month">{month.label}</text>)}
+                        {cells.map((cell) => (
+                            <rect class={`lv${cell.level}`} x={cell.x} y={cell.y} width={CELL} height={CELL} rx="3"
+                                data-tip={`${cell.count} ${cell.count === 1 ? "contribution" : "contributions"}, ${shortDate(cell.date)}`} />
+                        ))}
+                    </svg>
+                </div>
+            )}
+
+            {cells.length > 0 && (
+                <div class="heat-foot">
+                    <details class="table-view">
+                        <summary>Monthly table</summary>
+                        <table>
+                            <thead><tr><th scope="col">Month</th><th scope="col">Contributions</th></tr></thead>
+                            <tbody>{monthRows.map((row) => <tr><td>{row.month}</td><td>{row.count}</td></tr>)}</tbody>
+                        </table>
+                    </details>
+                    {busiestDay && <p class="note">Busiest day: {busiestDay.count} on {shortDate(busiestDay.date)}</p>}
+                    <div class="scale" aria-hidden="true">
+                        Less {[0, 1, 2, 3, 4].map((level) => <i class={`swatch lv${level}`}></i>)} More
+                    </div>
+                </div>
+            )}
+
+            {github.languages.length > 0 && (
+                <div class="langs">
+                    <h4>Main language by public repo</h4>
+                    <ul class="bars">
+                        {github.languages.map((language) => (
+                            <li>
+                                <span>{language.name}</span>
+                                <span class="track"><i style={`width:${(language.value / barMax(github.languages)) * 100}%`}></i></span>
+                                <span class="value">{language.label}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </article>
+    )}
+
+    {leetcode && (
+        <article class="card widget reveal">
+            <header class="widget-head">
+                <h3>LeetCode</h3>
+                {leetcode.sample && <span class="sample">Sample data</span>}
+                <a href={leetcode.url} target="_blank" rel="noopener">Profile</a>
+            </header>
+            <p class="hero-figure">{solved}<span>problems solved</span></p>
+            <div class="stack" role="img" aria-label={difficulties.map((d) => `${d.name} ${d.count}`).join(", ")}>
+                {difficulties.map((d) => <i class={d.key} style={`flex-grow:${d.count}`} data-tip={`${d.name}: ${d.count}`}></i>)}
+            </div>
+            <ul class="legend">
+                {difficulties.map((d) => <li><i class={d.key}></i>{d.name} <b>{d.count}</b></li>)}
+            </ul>
+
+            {leetcode.contest && (
+                <div class="contests">
+                    <h4>Contest rating</h4>
+                    <dl class="figures small">
+                        <div><dd>{leetcode.contest.rating}</dd><dt>rating</dt></div>
+                        <div><dd>{leetcode.contest.attended}</dd><dt>contests</dt></div>
+                        <div><dd>Top {leetcode.contest.topPercent}%</dd><dt>global</dt></div>
+                    </dl>
+                    {points.length > 1 && (
+                        <svg class="line" viewBox={`0 0 ${LINE_W} ${LINE_H}`} role="img" aria-label="Contest rating over time. Recent contests are listed below.">
+                            <line x1="0" x2={LINE_W} y1={LINE_H - 1} y2={LINE_H - 1} class="axis" />
+                            <polyline points={points.map((p) => `${p.x},${p.y}`).join(" ")} />
+                            {points.map((p, index) => (
+                                <g data-tip={`${p.title}: ${p.rating}`} tabindex="0" aria-label={`${p.title}: rating ${p.rating}`}>
+                                    <circle class="hit" cx={p.x} cy={p.y} r="12" />
+                                    {index === points.length - 1 && <circle class="dot" cx={p.x} cy={p.y} r="5" />}
+                                </g>
+                            ))}
+                        </svg>
+                    )}
+                    {history.length > 0 && (
+                        <table class="recent">
+                            <thead><tr><th scope="col">Recent contest</th><th scope="col">Rank</th><th scope="col">Rating</th></tr></thead>
+                            <tbody>
+                                {history.slice(-3).reverse().map((entry) => (
+                                    <tr><td>{entry.title}</td><td>{entry.rank.toLocaleString("en-US")}</td><td>{entry.rating}</td></tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
+                </div>
+            )}
+        </article>
+    )}
+
+    {wakatime && (
+        <article class="card widget reveal">
+            <header class="widget-head">
+                <h3>WakaTime</h3>
+                {wakatime.sample && <span class="sample">Sample data</span>}
+                <a href={wakatime.url} target="_blank" rel="noopener">Profile</a>
+            </header>
+            <p class="hero-figure">{wakatime.total}<span>coded in the last 7 days</span></p>
+            <dl class="figures small">
+                <div><dd>{wakatime.dailyAverage}</dd><dt>daily average</dt></div>
+                {wakatime.editor && <div><dd>{wakatime.editor}</dd><dt>top editor</dt></div>}
+            </dl>
+            <div class="langs">
+                <h4>Time by language</h4>
+                <ul class="bars">
+                    {wakatime.languages.map((language) => (
+                        <li>
+                            <span>{language.name}</span>
+                            <span class="track"><i style={`width:${(language.value / barMax(wakatime.languages)) * 100}%`}></i></span>
+                            <span class="value">{language.label}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </article>
+    )}
+</div>
+
+<style>
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px;
+    }
+
+    .widget {
+        padding: 24px;
+        min-width: 0;
+    }
+
+    .github { grid-column: 1 / -1; }
+
+    h3 {
+        font-family: var(--display);
+        font-size: 28px;
+        font-weight: 400;
+        line-height: 1.1;
+        margin: 0;
+    }
+
+    h4 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink-soft);
+        margin: 0 0 10px;
+    }
+
+    a { font-weight: 600; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { color: var(--orange); }
+
+    .profile {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px 18px;
+        margin-bottom: 20px;
+    }
+
+    .profile img {
+        width: 72px;
+        height: 72px;
+        border: 4px solid var(--ink);
+        border-radius: 50%;
+        background: var(--paper-deep);
+    }
+
+    .who a { font-family: var(--mono); font-size: 14px; }
+
+    .figures {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 30px;
+        margin: 0 0 0 auto;
+    }
+
+    .figures dd {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 800;
+        line-height: 1.15;
+    }
+
+    .figures dt { font-size: 13px; color: var(--ink-soft); }
+
+    .figures.small { margin: 0 0 20px; }
+    .figures.small dd { font-size: 20px; }
+
+    .heat-scroll { overflow-x: auto; padding-bottom: 4px; }
+
+    .heat { display: block; width: 100%; height: auto; }
+
+    .month { font-family: var(--mono); font-size: 9px; fill: var(--ink-soft); }
+
+    .lv0 { fill: #EDE2C9; background: #EDE2C9; }
+    .lv1 { fill: #A6DCCB; background: #A6DCCB; }
+    .lv2 { fill: #5FBFA6; background: #5FBFA6; }
+    .lv3 { fill: #1F9983; background: #1F9983; }
+    .lv4 { fill: #0B6B5C; background: #0B6B5C; }
+
+    .heat-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 8px 24px;
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--ink-soft);
+    }
+
+    .note { margin: 0; }
+
+    .scale {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        margin-left: auto;
+    }
+
+    .swatch { width: 11px; height: 11px; border-radius: 3px; }
+    .scale .swatch:first-of-type { margin-left: 4px; }
+    .scale .swatch:last-of-type { margin-right: 4px; }
+
+    .table-view summary { cursor: pointer; font-weight: 600; color: var(--ink); }
+
+    .table-view table, .recent {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .table-view table { margin-top: 8px; min-width: 240px; }
+
+    th { text-align: left; font-weight: 600; color: var(--ink-soft); }
+    th, td { padding: 4px 12px 4px 0; border-bottom: 1px solid var(--paper-deep); }
+    td { color: var(--ink); }
+    th:not(:first-child), td:not(:first-child) { text-align: right; padding-right: 0; }
+
+    .langs { margin-top: 22px; }
+
+    .bars {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .bars li {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .track { display: block; }
+
+    .track i {
+        display: block;
+        height: 8px;
+        min-width: 4px;
+        border-radius: 4px;
+        background: var(--teal);
+    }
+
+    .value { font-size: 13px; color: var(--ink-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .widget-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .widget-head a { margin-left: auto; font-size: 14px; }
+
+    .sample {
+        padding: 2px 9px;
+        background: var(--sun);
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .hero-figure {
+        margin: 0 0 14px;
+        font-size: 42px;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+    .hero-figure span {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--ink-soft);
+    }
+
+    .stack { display: flex; gap: 2px; height: 12px; }
+    .stack i { display: block; flex-basis: 0; min-width: 4px; }
+    .stack i:first-child { border-radius: 4px 0 0 4px; }
+    .stack i:last-child { border-radius: 0 4px 4px 0; }
+
+    .easy { background: #00917F; }
+    .medium { background: #D88A00; }
+    .hard { background: #C93F36; }
+
+    .legend {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        margin: 10px 0 0;
+        padding: 0;
+        font-size: 14px;
+    }
+
+    .legend li { display: flex; align-items: center; gap: 6px; }
+    .legend i { width: 10px; height: 10px; border-radius: 3px; }
+
+    .contests { margin-top: 22px; }
+
+    .line { display: block; width: 100%; height: auto; overflow: visible; margin-bottom: 12px; }
+    .line polyline { fill: none; stroke: var(--teal); stroke-width: 2; stroke-linejoin: round; }
+    .line .axis { stroke: var(--paper-deep); stroke-width: 1; }
+    .line .hit { fill: transparent; }
+    .line .dot { fill: var(--teal); stroke: var(--paper); stroke-width: 2; }
+    .line g:hover .hit, .line g:focus-visible .hit { fill: rgba(0, 145, 127, .18); }
+
+    @media (max-width: 860px) {
+        .stats { grid-template-columns: minmax(0, 1fr); }
+        .figures { margin-left: 0; }
+        .widget { padding: 18px; }
+    }
+</style>

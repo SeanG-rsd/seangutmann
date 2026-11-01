@@ -1,0 +1,510 @@
+---
+import Noodle from "./Noodle.astro";
+
+// One scene per page section, stacked top to bottom into a single mountain-to-seafloor
+// world. Every scene is drawn on a 1600x900 canvas and the bottom edge of each one is a
+// flat color that matches the top of the next, so the seams don't show.
+// src/javascript/journey.ts moves the camera and drives anything marked data-a.
+
+const INK = "#1E2140";
+const SKIN = "#F6C9A0";
+const TEE = "#FBF8F0";
+const NAVY = "#24365E";
+const ORANGE = "#E8622C";
+const SUN = "#FFC83D";
+const TEAL = "#00917F";
+const HAIR = "#D9A441";
+
+const ridgePines = [[60, 730, 1], [190, 712, 1.2], [320, 735, .9], [470, 750, 1.1], [640, 742, .9], [770, 725, 1.2], [930, 706, 1], [1080, 706, 1.25], [1210, 735, .95], [1360, 745, 1.15], [1490, 730, 1], [1590, 715, 1.2]];
+const backPines = [[40, 330], [170, 300], [310, 320], [450, 330], [600, 345], [750, 345], [890, 350], [1030, 345], [1170, 335], [1300, 335], [1430, 325], [1560, 320]];
+const midPines = [[-10, 480], [150, 470], [330, 465], [520, 480], [700, 495], [880, 495], [1060, 480], [1240, 470], [1420, 462], [1590, 450]];
+const flowers = [[60, 790], [210, 845], [380, 780], [560, 850], [740, 790], [930, 850], [1110, 780], [1290, 850], [1470, 785], [1570, 860]];
+const fish: [number, number, number, string][] = [[420, 210, 1, "#FFC83D"], [510, 170, .8, "#FF8A65"], [340, 150, .7, "#FFC83D"], [560, 250, .7, "#FF8A65"], [440, 110, .6, "#FFE08A"]];
+const bubbles = [[860, 760, 11], [1010, 690, 7], [1450, 330, 12], [1540, 180, 8], [640, 500, 9], [1120, 140, 7]];
+---
+
+<div class="stage" aria-hidden="true" data-stage>
+    {/* Shared drawings */}
+    <svg class="defs" width="0" height="0">
+        <defs>
+            <g id="head">
+                <circle cx="-22" cy="4" r="8" fill={SKIN} stroke={INK} stroke-width="5" />
+                <circle r="31" fill={SKIN} stroke={INK} stroke-width="5" />
+                <circle cx="9" cy="1" r="4" fill={INK} />
+                <circle cx="23" cy="1" r="4" fill={INK} />
+                <path d="M6 14 Q15 24 25 13" fill="none" stroke={INK} stroke-width="4" stroke-linecap="round" />
+                <path fill="currentColor" stroke={INK} stroke-width="5" stroke-linejoin="round" d="M-34 -2 C-42 -28 -24 -46 -4 -42 C8 -52 34 -46 36 -24 C40 -18 36 -10 32 -8 C28 -18 20 -24 10 -21 C2 -28 -10 -25 -14 -18 C-20 -20 -22 -8 -24 -4 C-28 0 -32 0 -34 -2Z" />
+            </g>
+            <g id="head-front">
+                <circle r="31" fill={SKIN} stroke={INK} stroke-width="5" />
+                <circle cx="-11" cy="1" r="4" fill={INK} />
+                <circle cx="11" cy="1" r="4" fill={INK} />
+                <path d="M-10 13 Q0 24 10 13Z" fill={INK} stroke={INK} stroke-width="3" stroke-linejoin="round" />
+                <path fill="currentColor" stroke={INK} stroke-width="5" stroke-linejoin="round" d="M-33 -4 C-42 -26 -26 -46 -8 -42 C2 -52 28 -48 32 -28 C38 -20 36 -8 32 -4 C28 -14 20 -20 10 -17 C2 -24 -10 -23 -14 -16 C-22 -18 -28 -10 -33 -4Z" />
+            </g>
+            <g id="pine">
+                <rect x="-8" y="12" width="16" height="24" fill="#6B4A3A" />
+                <path fill="currentColor" d="M0 -122 L34 -72 L18 -72 L46 -30 L24 -30 L58 14 L-58 14 L-24 -30 L-46 -30 L-18 -72 L-34 -72Z" />
+            </g>
+            <path id="cloud" fill="#fff" stroke={INK} stroke-width="5" stroke-linejoin="round" d="M-110 30 C-142 30 -150 -10 -112 -16 C-110 -52 -60 -58 -44 -32 C-24 -70 40 -66 48 -24 C84 -46 124 -14 104 14 C122 18 120 30 104 30Z" />
+            <g id="fish">
+                <path fill="currentColor" d="M34 0 L62 -20 L58 20Z" />
+                <ellipse rx="40" ry="22" fill="currentColor" />
+                <circle cx="-20" cy="-5" r="4" fill={INK} stroke="none" />
+            </g>
+            <g id="shoe"><path fill={INK} stroke="none" d="M-11 -7 Q-11 -12 -4 -12 L6 -12 Q24 -8 25 3 L-11 3Z" /></g>
+        </defs>
+    </svg>
+
+    {/* 0. Summit: hiking */}
+    <div class="scene" style="--i:0; --top:#FFB48A; --bot:#FFE3BD">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <circle cx="1400" cy="215" r="125" fill="#FFEFB0" stroke="none" opacity=".65" />
+            <circle cx="1400" cy="215" r="88" fill="#FFD25E" />
+            <g class="drift"><use href="#cloud" transform="translate(840 150) scale(1.1)" /></g>
+            <g class="drift slow"><use href="#cloud" transform="translate(600 275) scale(.7)" /></g>
+            <path d="M980 110 Q992 98 1004 110 Q1016 98 1028 110" fill="none" />
+            <path d="M1050 70 Q1058 62 1066 70 Q1074 62 1082 70" fill="none" />
+            <path fill="#C9A7C2" stroke="none" d="M-10 640 L210 400 L340 520 L520 330 L700 560 L900 440 L1010 540 L1300 470 L1620 380 L1620 720 L-10 720Z" />
+            <path fill="#7C6E9C" d="M-10 910 L-10 720 L230 600 L420 660 L690 480 L850 580 L1010 470 L1190 340 L1340 505 L1430 470 L1620 640 L1620 910Z" />
+            <path fill="#6B5E8B" stroke="none" d="M1190 342 L1340 507 L1430 472 L1618 640 L1618 905 L1090 905 L1230 660 L1150 520Z M692 482 L848 580 L1006 472 L1000 600 L880 760 L760 620Z" />
+            <path fill="#fff" d="M1190 340 L1095 409 L1125 440 L1160 412 L1192 452 L1226 416 L1262 446 L1290 450Z" />
+            <path fill="#fff" d="M690 480 L620 527 L650 548 L680 525 L712 552 L745 530 L770 530Z" />
+            <path fill="#5E5379" d="M-10 910 L-10 800 C300 730 560 840 880 780 C1180 724 1400 810 1620 760 L1620 910Z" />
+            <path d="M1235 390 L1235 222" fill="none" stroke-width="7" />
+            <path class="flag" fill={ORANGE} d="M1235 224 L1322 244 L1235 276Z" />
+            <g transform="translate(1190 258) scale(-1.25 1.25)">
+                <g data-a="hiker">
+                    <rect x="-46" y="-80" width="34" height="66" rx="13" fill={ORANGE} />
+                    <g data-a="hiker-leg-b"><Noodle d="M-8 8 L-14 60" /><use href="#shoe" x="-14" y="66" /></g>
+                    <Noodle d="M-18 -64 L-32 -28 L-26 -2" />
+                    <path fill={TEE} d="M-25 -76 Q0 -86 25 -76 L23 -8 L-23 -8Z" />
+                    <g data-a="hiker-leg-f"><Noodle d="M10 8 L16 60" /><use href="#shoe" x="16" y="66" /></g>
+                    <path fill={NAVY} d="M-24 -14 L24 -14 L28 26 L6 28 L0 12 L-6 28 L-28 26Z" />
+                    <use href="#head" y="-114" color={HAIR} />
+                    <g class="wave"><Noodle d="M18 -66 L44 -98 L40 -136" /></g>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    {/* 1. Rock face: climbing */}
+    <div class="scene" style="--i:1; --top:#5E5379; --bot:#5E5379">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path fill="#6B5E8B" stroke="none" d="M-10 90 L340 40 L520 210 L260 380 L-10 310Z M420 470 L760 380 L880 590 L560 690 L380 620Z" />
+            <path fill="none" stroke="#453B60" d="M90 -5 L160 130 L120 260 L220 400 M620 -5 L560 120 L660 290 L620 420 M290 480 L180 610 L240 720 M880 110 L800 230 L870 340" />
+            <path fill="#7C6E9C" d="M980 -12 L1570 -12 L1612 300 L1530 660 L1060 730 L950 340Z" />
+            <path fill="#8B7DAA" stroke="none" d="M1000 40 L1250 20 L1180 260 L1020 300Z M1370 320 L1560 280 L1500 600 L1340 560Z" />
+            <path fill="none" stroke="#453B60" d="M1090 60 L1150 190 L1090 300 M1450 40 L1400 170 L1470 250 M1110 470 L1190 590 L1140 680" />
+            <g>
+                <path fill={ORANGE} d="M1168 118 q24 -18 44 0 q6 22 -22 26 q-28 -2 -22 -26Z" />
+                <path fill={SUN} d="M1340 88 q26 -12 36 8 q-2 24 -26 18 q-18 -8 -10 -26Z" />
+                <path fill={TEAL} d="M1208 250 q22 -18 40 2 q2 22 -22 22 q-24 -2 -18 -24Z" />
+                <path fill="#FF8AA0" d="M1352 232 q26 -10 34 10 q-6 24 -28 16 q-16 -8 -6 -26Z" />
+                <path fill={SUN} d="M1158 396 q24 -14 38 6 q-4 22 -26 18 q-20 -6 -12 -24Z" />
+                <path fill={ORANGE} d="M1372 386 q24 -14 36 6 q-4 22 -26 18 q-18 -6 -10 -24Z" />
+                <path fill={TEAL} d="M1214 538 q22 -12 34 6 q-2 22 -24 18 q-18 -6 -10 -24Z" />
+                <path fill="#FF8AA0" d="M1340 524 q24 -12 34 8 q-4 20 -24 16 q-18 -6 -10 -24Z" />
+            </g>
+            {ridgePines.map(([x, y, s]) => <use href="#pine" transform={`translate(${x} ${y}) scale(${s})`} color="#2A6355" />)}
+            <path fill="#1F4D45" d="M-10 910 L-10 770 C260 700 520 800 800 745 C1080 690 1330 790 1620 730 L1620 910Z" />
+            <g transform="translate(1268 0) scale(1.45)">
+                <g data-a="climber">
+                    <path d="M0 -8 L0 -700" fill="none" stroke="#FFE08A" stroke-width="4" />
+                    <g data-a="climb-leg-l"><Noodle d="M-13 10 L-54 32 L-44 76" /><use href="#shoe" transform="translate(-44 82) scale(-1 1)" /></g>
+                    <g data-a="climb-leg-r"><Noodle d="M13 10 L52 26 L50 72" /><use href="#shoe" x="50" y="78" /></g>
+                    <g data-a="climb-arm-l"><Noodle d="M-20 -62 L-50 -104 L-42 -146" /></g>
+                    <g data-a="climb-arm-r"><Noodle d="M20 -62 L52 -96 L74 -82" /></g>
+                    <path fill={TEE} d="M-26 -76 Q0 -86 26 -76 L23 -8 L-23 -8Z" />
+                    <path fill={NAVY} d="M-24 -12 L24 -12 L28 24 L-28 24Z" />
+                    <path fill="none" stroke={ORANGE} stroke-width="7" d="M-24 -12 L24 -12" />
+                    <circle cx="-8" cy="14" r="10" fill={SUN} />
+                    <circle cy="-112" r="31" fill={SKIN} />
+                    <path fill={HAIR} d="M-33 -112 C-36 -96 -22 -92 -12 -96 C-4 -90 12 -90 20 -96 C30 -92 36 -100 33 -112Z" />
+                    <path fill={ORANGE} d="M-35 -110 C-38 -160 38 -160 35 -110 Q0 -100 -35 -110Z" />
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    {/* 2. Forest: mountain biking */}
+    <div class="scene" style="--i:2; --top:#1F4D45; --bot:#4F9A63">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <rect x="-10" y="-10" width="1620" height="920" fill="#1F4D45" stroke="none" />
+            <g stroke="#173B35">
+                {backPines.map(([x, y]) => <use href="#pine" transform={`translate(${x} ${y}) scale(1.45)`} color="#27594D" />)}
+            </g>
+            <path fill="#27594D" stroke="none" d="M-10 360 C400 310 900 400 1620 340 L1620 910 L-10 910Z" />
+            <g stroke="#1F4D45">
+                {midPines.map(([x, y]) => <use href="#pine" transform={`translate(${x} ${y}) scale(1.7)`} color="#2F6D58" />)}
+            </g>
+            <path fill="#2F6D58" stroke="none" d="M-10 520 C300 470 800 560 1620 480 L1620 910 L-10 910Z" />
+            <path fill="#4F9A63" d="M-60 590 C300 630 500 560 800 620 S1300 720 1660 680 L1660 930 L-60 930Z" />
+            <path fill="none" stroke="#B98A5A" stroke-width="30" stroke-linecap="butt" transform="translate(0 22)" d="M-60 590 C300 630 500 560 800 620 S1300 720 1660 680" />
+            <path id="trail" fill="none" stroke="none" d="M-60 590 C300 630 500 560 800 620 S1300 720 1660 680" />
+            <g><path fill="#7A5138" d="M1000 660 l70 -14 l6 26 l-70 14Z" /><ellipse cx="1072" cy="659" rx="8" ry="14" fill="#C69A6D" transform="rotate(-11 1072 659)" /></g>
+            <g data-a="biker">
+                <g transform="translate(0 20) scale(1.4)">
+                    <g data-a="wheel"><circle cx="-58" cy="-32" r="31" fill="none" stroke-width="7" /><path d="M-58 -60 L-58 -4 M-86 -32 L-30 -32" fill="none" stroke-width="3" /></g>
+                    <g data-a="wheel"><circle cx="60" cy="-32" r="31" fill="none" stroke-width="7" /><path d="M60 -60 L60 -4 M32 -32 L88 -32" fill="none" stroke-width="3" /></g>
+                    <path fill="none" stroke={ORANGE} stroke-width="8" d="M-58 -32 L-16 -74 L34 -78 L-6 -28 L-58 -32 M-6 -28 L-16 -74 M60 -32 L38 -92 L24 -96" />
+                    <path fill="none" stroke-width="7" d="M-30 -80 L-4 -80" />
+                    <g data-a="pedal-leg"><Noodle d="M-16 -88 L22 -66 L2 -28" /></g>
+                    <path fill={TEE} d="M-26 -82 C-24 -110 2 -136 26 -138 L38 -116 C24 -104 6 -88 -2 -74Z" />
+                    <path fill={NAVY} d="M-30 -92 L-2 -72 L8 -58 L-16 -52 L-34 -78Z" />
+                    <Noodle d="M26 -128 L40 -106 L30 -94" />
+                    <use href="#head" transform="translate(42 -164)" color={HAIR} />
+                    <path fill={TEAL} d="M8 -172 C10 -208 76 -208 76 -172 Q42 -184 8 -172Z" />
+                </g>
+            </g>
+            {[[110, 830, 1.3], [1540, 840, 1.25], [840, 830, 1.15], [430, 860, 1]].map(([x, y, s]) => <use href="#pine" transform={`translate(${x} ${y}) scale(${s})`} color="#3D8A5E" />)}
+            <g><rect x="1250" y="770" width="14" height="22" fill="#FBF8F0" /><path fill={ORANGE} d="M1234 772 Q1257 738 1280 772Z" /><rect x="660" y="796" width="12" height="18" fill="#FBF8F0" /><path fill="#FF8AA0" d="M646 798 Q666 770 686 798Z" /></g>
+        </svg>
+    </div>
+
+    {/* 3. Valley road: the truck */}
+    <div class="scene" style="--i:3; --top:#4F9A63; --bot:#8DBF66">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path fill="#6FB36B" d="M-10 240 C400 170 1000 290 1620 190 L1620 910 L-10 910Z" />
+            <g>
+                <path fill="#C7443A" d="M1370 400 L1370 310 L1420 262 L1470 310 L1470 400Z" />
+                <path fill="#FBF8F0" d="M1403 400 L1403 352 L1437 352 L1437 400Z" />
+                <path fill="#8B3A32" d="M1358 318 L1420 250 L1482 318 L1470 322 L1420 270 L1370 322Z" />
+            </g>
+            <path fill="#8DBF66" d="M-10 400 C500 330 1100 450 1620 380 L1620 910 L-10 910Z" />
+            <g fill="#B98A5A" stroke-width="4">
+                {[860, 950, 1040, 1130, 1220, 1310, 1400, 1490, 1580].map((x, index) => <rect x={x} y={392 + index * -1} width="14" height="56" rx="3" />)}
+                <path d="M840 416 L1600 408 M840 434 L1600 426" fill="none" stroke="#7A5138" />
+            </g>
+            {flowers.map(([x, y], index) => <g transform={`translate(${x} ${y - 300})`}><circle r="7" fill={index % 2 ? "#FFF" : SUN} stroke-width="3" /></g>)}
+            <rect x="-10" y="590" width="1620" height="104" fill="#4A4658" />
+            <path d="M-10 642 L1610 642" fill="none" stroke="#FFE08A" stroke-width="7" stroke-dasharray="46 40" stroke-linecap="butt" />
+            {flowers.map(([x, y], index) => <g transform={`translate(${x} ${y})`}><circle r="7" fill={index % 2 ? "#FF8AA0" : "#FFF"} stroke-width="3" /></g>)}
+            <g data-a="truck">
+                <g transform="translate(0 672) scale(1.55)">
+                    <circle class="puff" cx="188" cy="-44" r="9" fill="#FBF8F0" stroke-width="3" />
+                    <circle class="puff late" cx="196" cy="-52" r="7" fill="#FBF8F0" stroke-width="3" />
+                    <rect x="38" y="-148" width="60" height="60" rx="5" fill="#D9A96B" />
+                    <rect x="102" y="-148" width="60" height="60" rx="5" fill="#D9A96B" />
+                    <rect x="70" y="-212" width="60" height="60" rx="5" fill="#D9A96B" />
+                    <image href="/icons/BattleTanksIcon.png" x="45" y="-141" width="46" height="46" />
+                    <image href="/icons/InBetweenWorldsIcon.png" x="109" y="-141" width="46" height="46" />
+                    <image href="/icons/SyllabeavsIcon.png" x="77" y="-205" width="46" height="46" />
+                    <path fill={ORANGE} d="M-172 -30 L-172 -66 Q-170 -82 -150 -85 L-104 -90 L-72 -142 Q-68 -150 -56 -150 L18 -150 Q28 -150 28 -140 L28 -88 L172 -88 L172 -30Z" />
+                    <path fill="#BDE6F1" d="M-88 -92 L-62 -137 L0 -137 L0 -92Z" />
+                    <use href="#head" transform="translate(-30 -112) scale(-.68 .68)" color={HAIR} />
+                    <path fill="none" d="M4 -86 L4 -32" />
+                    <rect x="-172" y="-62" width="20" height="16" rx="5" fill={SUN} stroke-width="4" />
+                    <rect x="-180" y="-38" width="50" height="11" rx="5" fill="#E8E4DA" stroke-width="4" />
+                    <path fill={INK} stroke="none" d="M-128 -30 A38 38 0 0 1 -50 -30Z M56 -30 A38 38 0 0 1 134 -30Z" />
+                    <g data-a="wheel"><circle cx="-89" cy="-30" r="30" fill="#34364F" /><circle cx="-89" cy="-30" r="12" fill="#E8E4DA" /><path d="M-89 -42 L-89 -18" fill="none" stroke-width="3" /></g>
+                    <g data-a="wheel"><circle cx="95" cy="-30" r="30" fill="#34364F" /><circle cx="95" cy="-30" r="12" fill="#E8E4DA" /><path d="M95 -42 L95 -18" fill="none" stroke-width="3" /></g>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    {/* 4. Muscle beach: lifting */}
+    <div class="scene" style="--i:4; --top:#8DBF66; --bot:#F0D78F">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path fill="#D9C67E" d="M-10 290 C300 220 600 340 1000 270 C1250 230 1430 320 1620 260 L1620 910 L-10 910Z" />
+            <g fill="none" stroke="#6E9B50" stroke-width="6">
+                <path d="M160 270 q-14 -30 -22 -36 M172 268 q0 -34 2 -46 M184 270 q12 -28 24 -34 M930 280 q-14 -30 -22 -36 M942 278 q0 -34 2 -46 M954 280 q12 -28 24 -34 M1500 288 q-14 -30 -22 -36 M1512 286 q0 -34 2 -46 M1524 288 q12 -28 24 -34" />
+            </g>
+            <path fill="#F0D78F" d="M-10 470 C400 400 900 520 1620 430 L1620 910 L-10 910Z" />
+            <path fill="none" stroke="#D9BE72" stroke-width="5" d="M90 610 q40 -14 80 0 M360 760 q50 -16 100 0 M820 640 q40 -14 80 0 M700 830 q50 -16 100 0 M1540 790 q24 -10 48 0" />
+            <path fill="#B98A5A" d="M1020 700 L1480 700 L1500 738 L1000 738Z" />
+            <path fill="none" stroke="#7A5138" d="M1110 702 L1104 736 M1200 702 L1198 736 M1300 702 L1302 736 M1390 702 L1396 736" stroke-width="4" />
+            <g transform="translate(1250 590) scale(1.6)">
+                <g data-a="lifter">
+                    <Noodle d="M-13 6 L-32 66" /><use href="#shoe" transform="translate(-32 69) scale(-1 1)" />
+                    <Noodle d="M13 6 L32 66" /><use href="#shoe" x="32" y="69" />
+                    <path fill={TEE} d="M-27 -76 Q0 -86 27 -76 L23 -8 L-23 -8Z" />
+                    <path fill={NAVY} d="M-24 -14 L24 -14 L30 28 L6 30 L0 14 L-6 30 L-30 28Z" />
+                    <use href="#head-front" y="-112" color={HAIR} />
+                    <Noodle a="lift-arm-l" d="M-22 -68 L-78 -46 L-52 -76" />
+                    <Noodle a="lift-arm-r" d="M22 -68 L78 -46 L52 -76" />
+                    <g data-a="bar">
+                        <rect x="-168" y="-81" width="336" height="10" rx="5" fill="#E8E4DA" stroke-width="4" />
+                        <rect x="-132" y="-116" width="20" height="80" rx="7" fill={ORANGE} />
+                        <rect x="-112" y="-106" width="14" height="60" rx="6" fill={SUN} />
+                        <rect x="112" y="-116" width="20" height="80" rx="7" fill={ORANGE} />
+                        <rect x="98" y="-106" width="14" height="60" rx="6" fill={SUN} />
+                    </g>
+                </g>
+            </g>
+            <g transform="translate(1040 125)">
+                <g data-a="pr-bubble">
+                    <path fill="#FFF9EC" d="M-84 -68 L84 -68 Q98 -68 98 -54 L98 28 Q98 42 84 42 L54 42 L88 86 L14 42 L-84 42 Q-98 42 -98 28 L-98 -54 Q-98 -68 -84 -68Z" />
+                    <text class="bubble-text" y="4" x="0" text-anchor="middle" stroke="none" fill={ORANGE}>PR!</text>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    {/* 5. Beach: volleyball and frisbee */}
+    <div class="scene" style="--i:5; --top:#F0D78F; --bot:#F0D78F">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <defs>
+                <linearGradient id="shallows" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46CAD6" /><stop offset="1" stop-color="#1CA3C2" /></linearGradient>
+            </defs>
+            <path fill="none" stroke="#D9BE72" d="M120 140 q50 -16 100 0 M600 90 q40 -14 80 0 M1010 130 q40 -14 80 0 M300 420 q50 -16 100 0 M1480 80 q40 -14 80 0" />
+            <g transform="translate(868 500)">
+                <path fill="#8FD3E0" d="M-96 58 L50 44 L88 70 L-54 88Z" />
+                <path d="M0 40 L12 -176" fill="none" stroke-width="7" />
+                <path fill={ORANGE} d="M-120 -96 C-96 -196 96 -210 142 -112 C112 -128 92 -124 72 -108 C50 -126 26 -126 8 -108 C-16 -122 -40 -118 -56 -102 C-78 -112 -102 -110 -120 -96Z" />
+                <path fill="#FFF9EC" d="M8 -108 C8 -150 8 -176 12 -184 C30 -170 60 -140 72 -108 C50 -126 26 -126 8 -108Z" />
+            </g>
+            <path fill="none" stroke="#FFF9EC" stroke-width="5" d="M1040 568 L1420 500" />
+            <g fill="none" stroke-width="3" stroke="#1E2140">
+                <path d="M1192 296 L1192 400 M1216 290 L1216 394 M1240 284 L1240 388 M1264 278 L1264 382 M1170 322 L1290 292 M1170 348 L1290 318 M1170 374 L1290 344" />
+            </g>
+            <path fill="none" stroke-width="6" d="M1170 300 L1290 270 M1170 406 L1290 376" />
+            <path d="M1170 278 L1170 566" fill="none" stroke-width="10" />
+            <path d="M1290 250 L1290 534" fill="none" stroke-width="10" />
+            <g transform="translate(1040 478) scale(1.15)">
+                <g data-a="player-l">
+                    <Noodle d="M-10 8 L-16 58" /><use href="#shoe" x="-16" y="64" />
+                    <path fill={TEE} d="M-25 -76 Q0 -86 25 -76 L23 -8 L-23 -8Z" />
+                    <Noodle d="M12 8 L18 58" /><use href="#shoe" x="18" y="64" />
+                    <path fill={NAVY} d="M-24 -14 L24 -14 L28 26 L6 28 L0 12 L-6 28 L-28 26Z" />
+                    <use href="#head" y="-114" color={HAIR} />
+                    <Noodle d="M18 -66 L38 -104 L52 -142" />
+                </g>
+            </g>
+            <g transform="translate(1385 448) scale(-1.15 1.15)">
+                <g data-a="player-r">
+                    <Noodle d="M-10 8 L-16 58" color="#C98F62" /><use href="#shoe" x="-16" y="64" />
+                    <path fill={TEAL} d="M-25 -76 Q0 -86 25 -76 L23 -8 L-23 -8Z" />
+                    <Noodle d="M12 8 L18 58" color="#C98F62" /><use href="#shoe" x="18" y="64" />
+                    <path fill={SUN} d="M-24 -14 L24 -14 L28 26 L6 28 L0 12 L-6 28 L-28 26Z" />
+                    <use href="#head" y="-114" color="#3B2A25" />
+                    <Noodle d="M18 -66 L38 -104 L52 -142" color="#C98F62" />
+                </g>
+            </g>
+            <g data-a="volleyball">
+                <circle r="25" fill="#FFF9EC" />
+                <path fill="none" stroke-width="3.5" d="M-24 -6 Q-2 -6 8 -23 M-14 20 Q-8 -2 8 -8 Q18 4 22 12 M2 25 Q14 12 8 -8" />
+            </g>
+            <g data-a="frisbee">
+                <ellipse rx="44" ry="13" fill={ORANGE} />
+                <ellipse rx="24" ry="6" cy="-2" fill="none" stroke="#FFF9EC" stroke-width="3" />
+            </g>
+            <g transform="translate(1560 545) scale(1.05)">
+                <g data-a="dog">
+                    <path d="M46 -24 Q72 -44 76 -66" fill="none" stroke-width="13" />
+                    <path d="M46 -24 Q72 -44 76 -66" fill="none" stroke="#C69A6D" stroke-width="6" />
+                    <Noodle d="M-26 -8 L-34 30" color="#C69A6D" w="11" /><Noodle d="M38 -8 L44 30" color="#C69A6D" w="11" />
+                    <path fill="#C69A6D" d="M-46 -50 Q0 -62 52 -40 Q62 -10 42 2 L-28 2 Q-50 -10 -46 -50Z" />
+                    <circle cx="-60" cy="-72" r="29" fill="#C69A6D" />
+                    <path fill="#8E6642" d="M-40 -96 Q-10 -90 -18 -56 Q-36 -58 -42 -74Z" />
+                    <path fill="#E8D0AE" d="M-86 -74 Q-108 -74 -108 -60 Q-104 -50 -74 -54Z" />
+                    <circle cx="-105" cy="-68" r="5" fill={INK} stroke="none" />
+                    <circle cx="-66" cy="-80" r="4" fill={INK} stroke="none" />
+                </g>
+            </g>
+            <path fill="url(#shallows)" d="M-10 640 C200 610 400 660 620 630 S1100 660 1300 625 S1500 650 1620 630 L1620 910 L-10 910Z" />
+            <path fill="none" stroke="#FFF9EC" stroke-width="10" transform="translate(0 12)" d="M-10 640 C200 610 400 660 620 630 S1100 660 1300 625 S1500 650 1620 630" />
+            <path fill="none" stroke="#7FE0E6" stroke-width="6" d="M140 730 q40 -14 80 0 q40 14 80 0 M740 770 q40 -14 80 0 q40 14 80 0 M1230 720 q40 -14 80 0 q40 14 80 0 M480 830 q40 -14 80 0 q40 14 80 0 M1090 840 q40 -14 80 0 q40 14 80 0" />
+        </svg>
+    </div>
+
+    {/* 6. Open water: scuba */}
+    <div class="scene" style="--i:6; --top:#1CA3C2; --bot:#0E5F8E">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path fill="#fff" fill-opacity=".09" stroke="none" d="M180 -5 L340 -5 L170 910 L-120 910Z M760 -5 L900 -5 L1020 910 L640 910Z M1270 -5 L1430 -5 L1720 910 L1420 910Z" />
+            <g class="sway"><Noodle d="M70 910 C30 800 110 700 70 590 C40 510 100 450 76 380" color="#1F9E7A" w="18" /></g>
+            <g class="sway slow"><Noodle d="M175 910 C145 830 205 760 170 680 C150 620 190 580 176 530" color="#27B58A" w="15" /></g>
+            <g class="sway"><Noodle d="M1540 910 C1500 800 1580 700 1540 610 C1510 540 1570 480 1546 420" color="#1F9E7A" w="18" /></g>
+            <g class="sway slow"><Noodle d="M1450 910 C1420 840 1480 790 1450 720 C1432 680 1466 640 1454 610" color="#27B58A" w="15" /></g>
+            <g data-a="school">
+                {fish.map(([x, y, s, color]) => <use href="#fish" transform={`translate(${x} ${y}) scale(${s})`} color={color} />)}
+            </g>
+            {bubbles.map(([x, y, r], index) => <circle class={`bubble b${index % 3}`} cx={x} cy={y} r={r} fill="#fff" fill-opacity=".25" stroke="#fff" stroke-width="3" />)}
+            <g data-a="diver">
+                <g transform="scale(1.55)">
+                    <circle class="bubble b0" cx="-122" cy="-46" r="8" fill="#fff" fill-opacity=".3" stroke="#fff" stroke-width="3" />
+                    <circle class="bubble b1" cx="-110" cy="-60" r="5" fill="#fff" fill-opacity=".3" stroke="#fff" stroke-width="3" />
+                    <circle class="bubble b2" cx="-128" cy="-74" r="6" fill="#fff" fill-opacity=".3" stroke="#fff" stroke-width="3" />
+                    <g data-a="fin-a"><Noodle d="M66 -6 L128 -18 L170 -8" color={NAVY} w="15" /><path fill={SUN} d="M170 -28 L240 -44 L232 8 L170 6Z" /></g>
+                    <g data-a="fin-b"><Noodle d="M66 10 L128 20 L170 36" color={NAVY} w="15" /><path fill={SUN} d="M168 18 L232 22 L216 72 L158 54Z" /></g>
+                    <rect x="-42" y="-66" width="104" height="34" rx="16" fill={SUN} />
+                    <path fill="none" stroke-width="4" d="M-42 -50 Q-76 -60 -96 -26" />
+                    <path fill={NAVY} d="M-72 -26 Q0 -40 74 -24 Q90 2 74 24 Q0 36 -72 24 Q-86 0 -72 -26Z" />
+                    <path fill="none" stroke={ORANGE} stroke-width="7" d="M-22 -30 L-20 30 M28 -30 L30 30" />
+                    <Noodle d="M-48 2 L-108 34 L-164 24" color={NAVY} w="15" />
+                    <circle cx="-104" cy="-14" r="31" fill={SKIN} />
+                    <path fill={NAVY} d="M-136 -22 C-136 -52 -76 -60 -72 -14 C-72 4 -82 14 -92 16 C-92 0 -94 -16 -112 -24Z" />
+                    <rect x="-140" y="-34" width="42" height="28" rx="11" fill="#BDE6F1" stroke-width="6" />
+                    <circle cx="-126" cy="-20" r="4" fill={INK} stroke="none" />
+                    <circle cx="-127" cy="6" r="10" fill={INK} stroke="none" />
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    {/* 7. Seafloor: the octopus */}
+    <div class="scene last" style="--i:7; --top:#0E5F8E; --bot:#0A3358">
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="none" stroke={INK} stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path fill="#fff" fill-opacity=".05" stroke="none" d="M760 -5 L900 -5 L1020 620 L640 620Z M1320 -5 L1450 -5 L1660 620 L1420 620Z" />
+            {bubbles.map(([x, y, r], index) => <circle class={`bubble b${index % 3}`} cx={x} cy={y - 100} r={r} fill="#fff" fill-opacity=".2" stroke="#fff" stroke-width="3" />)}
+            <path fill="#27456B" d="M-10 650 C300 600 700 690 1100 640 C1300 615 1500 670 1620 630 L1620 910 L-10 910Z" />
+            <g class="sway"><Noodle d="M890 680 C880 620 910 590 900 540 M896 620 C930 600 940 570 936 540 M886 640 C850 620 846 590 852 566" color="#FF6F91" w="13" /></g>
+            <g class="sway slow"><Noodle d="M1530 680 C1520 610 1550 580 1540 520 M1536 610 C1570 590 1580 560 1576 526 M1526 630 C1494 610 1490 580 1496 552" color="#FFB03D" w="13" /></g>
+            <g transform="translate(1000 690)">
+                <path fill="#6B4A3A" d="M-52 0 L-52 -46 Q0 -92 52 -46 L52 0Z" /><path fill="#7A5138" d="M-58 -2 L58 -2 L54 46 L-54 46Z" />
+                <rect x="-10" y="-14" width="20" height="26" rx="4" fill={SUN} />
+            </g>
+            <g transform="translate(1250 512) scale(1.2)">
+                <g data-a="octopus">
+                    <g class="tent t0"><Noodle d="M-104 30 C-190 40 -220 110 -190 150 C-170 170 -150 150 -160 130" color="#FF7A59" w="27" /></g>
+                    <g class="tent t1"><Noodle d="M-66 50 C-110 110 -120 170 -70 180 C-44 182 -40 156 -60 150" color="#FF7A59" w="27" /></g>
+                    <g class="tent t2"><Noodle d="M-20 60 C-30 120 -30 170 6 180 C30 182 30 158 12 152" color="#FF7A59" w="27" /></g>
+                    <g class="tent t3"><Noodle d="M30 60 C40 120 60 170 96 170 C120 168 118 142 98 142" color="#FF7A59" w="27" /></g>
+                    <g class="tent t4"><Noodle d="M76 44 C130 90 170 140 210 124 C232 110 216 86 196 96" color="#FF7A59" w="27" /></g>
+                    <g class="tent bottle-arm">
+                        <g transform="translate(236 -116) rotate(18)">
+                            <rect x="-26" y="-58" width="52" height="96" rx="16" fill="#BDE6F1" fill-opacity=".7" />
+                            <rect x="-11" y="-84" width="22" height="30" rx="5" fill="#BDE6F1" fill-opacity=".7" />
+                            <rect x="-9" y="-96" width="18" height="14" rx="3" fill="#B98A5A" />
+                            <rect x="-12" y="-38" width="24" height="56" rx="4" fill="#FFF9EC" stroke-width="3" transform="rotate(10)" />
+                        </g>
+                        <Noodle d="M108 -6 C170 -14 190 -50 220 -86 C232 -102 262 -92 256 -70" color="#FF7A59" w="27" />
+                    </g>
+                    <path fill="#FF8A65" d="M-124 40 C-160 -120 -74 -196 0 -196 C74 -196 160 -120 124 40 C84 74 -84 74 -124 40Z" />
+                    <circle cx="-74" cy="-122" r="13" fill="#EE6A49" stroke="none" />
+                    <circle cx="-44" cy="-158" r="8" fill="#EE6A49" stroke="none" />
+                    <circle cx="72" cy="-138" r="10" fill="#EE6A49" stroke="none" />
+                    <g data-a="eyes">
+                        <circle cx="-46" cy="-34" r="33" fill="#fff" /><circle cx="46" cy="-34" r="33" fill="#fff" />
+                        <circle class="pupil" cx="-38" cy="-30" r="15" fill={INK} stroke="none" /><circle class="pupil" cx="54" cy="-30" r="15" fill={INK} stroke="none" />
+                        <circle cx="-34" cy="-36" r="5" fill="#fff" stroke="none" /><circle cx="58" cy="-36" r="5" fill="#fff" stroke="none" />
+                    </g>
+                    <path d="M-22 16 Q4 40 30 16" fill="none" stroke-width="6" />
+                </g>
+            </g>
+            <path fill="#1C3556" d="M-10 790 C400 740 900 820 1620 760 L1620 910 L-10 910Z" />
+            <g transform="translate(180 760)"><path fill="#FFB03D" stroke-width="4" d="M0 -30 L9 -9 L31 -8 L14 7 L20 29 L0 17 L-20 29 L-14 7 L-31 -8 L-9 -9Z" /></g>
+            <g transform="translate(720 830)"><path fill="#FF8AA0" stroke-width="4" d="M0 -22 L7 -7 L23 -6 L10 5 L15 21 L0 13 L-15 21 L-10 5 L-23 -6 L-7 -7Z" /></g>
+        </svg>
+    </div>
+</div>
+
+<style>
+    .stage {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        background: #FFB48A;
+    }
+
+    .defs { position: absolute; }
+
+    /* Fills the screen on landscape. On portrait it shows only the right half of each
+       scene at a larger size, which keeps the character in view, so scenes stack up. */
+    .scene {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: max(100vw, 177.78vh);
+        aspect-ratio: 16 / 9;
+        background: linear-gradient(var(--top), var(--bot));
+        will-change: transform;
+    }
+
+    /* Without JS only the summit shows. journey.ts takes over the visibility of each scene. */
+    .scene:not(:first-of-type) { visibility: hidden; }
+
+    /* The last scene continues as seabed past its bottom edge on tall screens. */
+    .scene.last::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        height: 100vh;
+        background: #1C3556;
+    }
+
+    @media (max-aspect-ratio: 1/1) {
+        .scene { width: 205vw; }
+    }
+
+    .scene svg {
+        display: block;
+        width: 100%;
+        height: calc(100% + 2px);
+    }
+
+    .bubble-text {
+        font-family: var(--display);
+        font-size: 66px;
+    }
+
+    /* Looping idle motion. Everything that follows scroll is in journey.ts. */
+    .drift { animation: drift 16s ease-in-out infinite alternate; }
+    .drift.slow { animation-duration: 24s; }
+    @keyframes drift { to { translate: 70px 0; } }
+
+    .flag {
+        transform-box: fill-box;
+        transform-origin: 0% 50%;
+        animation: flag 1.1s ease-in-out infinite alternate;
+    }
+    @keyframes flag { from { transform: skewY(-5deg) scaleX(1); } to { transform: skewY(7deg) scaleX(.9); } }
+
+    .wave {
+        transform-box: fill-box;
+        transform-origin: 0% 100%;
+        animation: wave .55s ease-in-out infinite alternate;
+    }
+    @keyframes wave { from { transform: rotate(-9deg); } to { transform: rotate(14deg); } }
+
+    .sway {
+        transform-box: fill-box;
+        transform-origin: 50% 100%;
+        animation: sway 4.5s ease-in-out infinite alternate;
+    }
+    .sway.slow { animation-duration: 6.5s; animation-delay: -2s; }
+    @keyframes sway { from { transform: rotate(-3.5deg); } to { transform: rotate(4deg); } }
+
+    .bubble {
+        animation: rise 5s ease-in infinite;
+    }
+    .bubble.b1 { animation-delay: -1.7s; animation-duration: 6s; }
+    .bubble.b2 { animation-delay: -3.3s; animation-duration: 4.2s; }
+    @keyframes rise {
+        0% { translate: 0 30px; opacity: 0; }
+        15% { opacity: 1; }
+        85% { opacity: 1; }
+        100% { translate: 18px -120px; opacity: 0; }
+    }
+
+    .puff { animation: puff 1.5s ease-out infinite; }
+    .puff.late { animation-delay: -.75s; }
+    @keyframes puff {
+        0% { translate: 0 0; opacity: 0; scale: .6; }
+        30% { opacity: 1; }
+        100% { translate: 40px -32px; opacity: 0; scale: 1.5; }
+    }
+
+    .tent {
+        transform-box: fill-box;
+        transform-origin: 50% 0%;
+        animation: tent 2.6s ease-in-out infinite alternate;
+    }
+    .tent.t1 { animation-delay: -.5s; }
+    .tent.t2 { animation-delay: -1s; }
+    .tent.t3 { animation-delay: -1.5s; }
+    .tent.t4 { animation-delay: -2s; }
+    .tent.bottle-arm {
+        transform-origin: 0% 100%;
+        animation-duration: 1.6s;
+    }
+    @keyframes tent { from { transform: rotate(-5deg); } to { transform: rotate(6deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+        .drift, .flag, .wave, .sway, .bubble, .puff, .tent { animation: none; }
+    }
+</style>

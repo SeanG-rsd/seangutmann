@@ -1,0 +1,9 @@
+---
+// A cartoon limb: a thick ink stroke with a thinner colored stroke on top.
+const { d, color = "#F6C9A0", w = 12, a } = Astro.props;
+---
+
+<g data-a={a} fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path data-noodle d={d} stroke="#1E2140" stroke-width={Number(w) + 9} />
+    <path data-noodle d={d} stroke={color} stroke-width={w} />
+</g>

@@ -1,95 +1,852 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-import background from '../assets/background.svg';
+/*
+Would like to show github with commit history and profile widget
+Show leetcode stats and competition history
+Show wakatime stats as well
+
+Current Top 2 Projects that I'm working on with links and some progress photos
+
+Simple scroll animation that is clean and moves components onto the screen as you scroll
+Cool animated background that has something to do with scuba, octopi, biking, climbing, lifting, truck, frisbee, volleyball, hiking
+etc.
+    Scroll animation would play through all the activities in their cartoony fashion
+    The background would be cartoony
+
+Includes:
+    Experience
+    Projects
+    Skills
+    Education
+
+Footer with contact information and simple form to fill out
+*/
+import JourneyLayout from "../layouts/JourneyLayout.astro";
+import Stage from "../components/journey/Stage.astro";
+import StatsPanel from "../components/journey/StatsPanel.astro";
+import { links, stops, nowProjects, experience, projects, skills, education, leadership } from "../data/site";
+import { getStats } from "../data/stats";
+
+const { github, leetcode, wakatime, commits } = await getStats();
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? "";
+
+const elev = Object.fromEntries(stops.map((stop) => [stop.id, stop.elevation]));
+const altLabel = (id: string, place: string) => {
+    const feet = elev[id];
+    if (feet === 0) return `Sea level · ${place}`;
+    return `${Math.abs(feet).toLocaleString("en-US")} ft ${feet < 0 ? "deep" : "up"} · ${place}`;
+};
+const commitDate = (iso: string) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+const hexes = [[46, 40, 0], [132, 40, 1], [218, 40, 2], [304, 40, 0], [89, 114, 2], [175, 114, 0], [261, 114, 1], [46, 188, 1], [132, 188, 0], [218, 188, 2], [304, 188, 1]];
+const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
 ---
 
-<Layout title="Home">
-	<canvas id="canvas">
+<JourneyLayout
+    title="Sean Gutmann"
+    description="Sean Gutmann is a Computer Science Systems student at Oregon State University and former Wizards of the Coast intern who builds mobile apps, multiplayer games, and AI tools."
+>
+    <Stage />
 
-	</canvas>
+    <nav class="rail" aria-label="Page sections">
+        <p class="readout"><span class="readout-label">Elev.</span><span data-elevation>14,411 ft</span></p>
+        <ol>
+            {stops.map((stop, index) => (
+                <li><a href={`#${stop.id}`} data-rail-link={index} aria-current={index === 0 ? "true" : undefined}><span>{stop.label}</span></a></li>
+            ))}
+        </ol>
+    </nav>
 
-	<div id="container" class="box">
-		<main class="flex-1 flex flex-col items-center justify-center">
-			<h1>Hi There! I am a current Oregon State</h1>
-			<h1>University Sophomore studying</h1>
-			<h1>Computer Science Systems</h1>
-		</main>
-	</div>
-</Layout>
+    <details class="mobile-nav" data-mobile-nav>
+        <summary><span data-elevation>14,411 ft</span><span class="menu-word">Menu</span></summary>
+        <ol>{stops.map((stop) => <li><a href={`#${stop.id}`}>{stop.label}</a></li>)}</ol>
+    </details>
+
+    <main class="journey">
+        {/* Summit */}
+        <section id="top" class="hero" data-scene="0" data-elev={elev.top}>
+            <p class="alt">Mt. Rainier · 14,411 ft · Seattle, WA</p>
+            <h1>Sean<br />Gutmann</h1>
+            <div class="card intro">
+                <p>I study Computer Science Systems at Oregon State, interned at Wizards of the Coast on MTG Arena, and build mobile apps, games, and AI tools. When I'm not coding I'm probably somewhere on this page.</p>
+                <div class="actions">
+                    <a class="button primary" href="#contact">Say hi</a>
+                    <a class="button" href={links.github} target="_blank" rel="noopener">GitHub</a>
+                    <a class="button" href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+                </div>
+            </div>
+            <a class="follow" href="#now">Scroll to hike down <span aria-hidden="true">↓</span></a>
+        </section>
+
+        {/* Rock face */}
+        <section id="now" class="chapter" data-scene="1" data-elev={elev.now} style="--accent:#FFC83D">
+            <header class="chapter-head">
+                <p class="alt">{altLabel("now", "The rock face")}</p>
+                <h2>On the wall</h2>
+                <p class="lede">The two projects I'm climbing right now.</p>
+            </header>
+            <div class="now-grid">
+                {nowProjects.map((project) => (
+                    <article class="card now-card reveal">
+                        <div class="progress">
+                            {project.photos.length > 0 ? (
+                                <div class="photos">
+                                    {project.photos.map((photo) => <img src={photo} alt={`${project.title} progress`} loading="lazy" />)}
+                                </div>
+                            ) : project.art === "cube" ? (
+                                <div class="art art-cube">
+                                    <img src="/icons/CubeSolverIcon.png" alt="Cube Solver app icon: a Rubik's Cube inside a camera viewfinder" width="220" height="220" loading="lazy" />
+                                    <span class="scanline" aria-hidden="true"></span>
+                                </div>
+                            ) : (
+                                <div class="art art-hive">
+                                    <svg viewBox="0 0 350 230" aria-hidden="true">
+                                        {hexes.map(([x, y, shade]) => (
+                                            <polygon points="0,-42 37,-21 37,21 0,42 -37,21 -37,-21" transform={`translate(${x} ${y})`} fill={hexColors[shade]} stroke="#1E2140" stroke-width="4" stroke-linejoin="round" />
+                                        ))}
+                                    </svg>
+                                    <img class="bee b1" src="/demos/GrandTourBee.png" alt="" width="56" height="40" loading="lazy" />
+                                    <img class="bee b2" src="/demos/GrandTourBee.png" alt="" width="42" height="30" loading="lazy" />
+                                    <img class="bee b3" src="/demos/GrandTourBee.png" alt="" width="49" height="35" loading="lazy" />
+                                </div>
+                            )}
+                        </div>
+                        <div class="now-body">
+                            <h3>{project.title}</h3>
+                            <p>{project.summary}</p>
+                            <ul class="points">{project.points.map((point) => <li>{point}</li>)}</ul>
+                            <div class="tags">{project.tech.map((tech) => <span class="tag">{tech}</span>)}</div>
+                            {commits[project.repo]?.length > 0 && (
+                                <div class="log">
+                                    <h4>Latest commits</h4>
+                                    <ul>
+                                        {commits[project.repo].map((commit: { url: string; date: string; message: string }) => (
+                                            <li><a href={commit.url} target="_blank" rel="noopener"><time datetime={commit.date}>{commitDate(commit.date)}</time>{commit.message}</a></li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                            <a class="button" href={`${links.github}/${project.repo}`} target="_blank" rel="noopener">View the repo</a>
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </section>
+
+        {/* Forest */}
+        <section id="experience" class="chapter" data-scene="2" data-elev={elev.experience} style="--accent:#8FD694">
+            <header class="chapter-head">
+                <p class="alt">{altLabel("experience", "The forest trail")}</p>
+                <h2>The trail so far</h2>
+                <p class="lede">Where I've worked, and what I did there.</p>
+            </header>
+            <ol class="timeline">
+                {experience.map((job) => (
+                    <li class="card job reveal">
+                        <p class="dates">{job.dates}</p>
+                        <h3>{job.role}</h3>
+                        <p class="org">{job.org}, {job.place}</p>
+                        <ul class="points">{job.points.map((point) => <li>{point}</li>)}</ul>
+                    </li>
+                ))}
+            </ol>
+        </section>
+
+        {/* Valley road */}
+        <section id="projects" class="chapter" data-scene="3" data-elev={elev.projects} style="--accent:#FF9A6B">
+            <header class="chapter-head">
+                <p class="alt">{altLabel("projects", "The valley road")}</p>
+                <h2>Shipped</h2>
+                <p class="lede">Loaded up and out the door: games, apps, and hackathon builds.</p>
+            </header>
+            <div class="crate-grid">
+                {projects.map((project) => (
+                    <article class="card crate reveal">
+                        <div class="crate-image"><img src={project.image} alt={`${project.title} preview`} loading="lazy" /></div>
+                        <div class="crate-body">
+                            <p class="dates">{project.dates}</p>
+                            <h3>{project.title}</h3>
+                            <p class="kind">{project.kind}</p>
+                            <p class="summary">{project.summary}</p>
+                            <div class="tags">{project.tech.map((tech) => <span class="tag">{tech}</span>)}</div>
+                            <div class="crate-links">
+                                <a href={project.github} target="_blank" rel="noopener">GitHub</a>
+                                {project.live && <a href={project.live} target="_blank" rel="noopener">{project.liveLabel}</a>}
+                            </div>
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </section>
+
+        {/* Muscle beach */}
+        <section id="records" class="chapter" data-scene="4" data-elev={elev.records} style="--accent:#FFC83D">
+            <header class="chapter-head">
+                <p class="alt">{altLabel("records", "Muscle beach")}</p>
+                <h2>Personal records</h2>
+                <p class="lede">The other kind of PR: commits, contests, and hours at the keyboard.</p>
+            </header>
+            <StatsPanel github={github} leetcode={leetcode} wakatime={wakatime} />
+        </section>
+
+        {/* Beach */}
+        <section id="skills" class="chapter" data-scene="5" data-elev={elev.skills} style="--accent:#7FE0E6">
+            <header class="chapter-head">
+                <p class="alt">{altLabel("skills", "The beach")}</p>
+                <h2>Beach day kit</h2>
+                <p class="lede">What I bring with me when there's something to build.</p>
+            </header>
+            <div class="skill-grid">
+                {skills.map((group) => (
+                    <div class="card skill reveal">
+                        <h3>{group.name}</h3>
+                        <div class="tags">{group.items.map((item) => <span class="tag">{item}</span>)}</div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        {/* Open water */}
+        <section id="education" class="chapter" data-scene="6" data-elev={elev.education} style="--accent:#BDE6F1">
+            <header class="chapter-head">
+                <p class="alt">{altLabel("education", "Open water")}</p>
+                <h2>Deep dive</h2>
+                <p class="lede">School, clubs, and the things I go deep on.</p>
+            </header>
+            <div class="school-stack">
+                {education.map((school) => (
+                    <div class="card school reveal">
+                        <p class="dates">{school.dates}</p>
+                        <h3>{school.school}</h3>
+                        <p class="org">{school.credential}</p>
+                        <p class="highlight">{school.highlight}</p>
+                        {school.detail && <p class="detail">{school.detail}</p>}
+                        {school.current && <p class="detail">{school.current}</p>}
+                    </div>
+                ))}
+                <div class="card school reveal">
+                    <h3>Clubs & leadership</h3>
+                    {leadership.map((item) => (
+                        <div class="lead">
+                            <h4>{item.role}</h4>
+                            {item.dates && <p class="dates">{item.dates}</p>}
+                            <ul class="points">{item.points.map((point) => <li>{point}</li>)}</ul>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+
+        {/* Seafloor */}
+        <footer id="contact" class="chapter last" data-scene="7" data-elev={elev.contact} style="--accent:#FF8A65">
+            <header class="chapter-head">
+                <p class="alt">{altLabel("contact", "The seafloor")}</p>
+                <h2>Message in a bottle</h2>
+                <p class="lede">You made it to the bottom. Have an internship, a project, or a good trail recommendation? Send it down.</p>
+            </header>
+            <div class="contact-grid">
+                <form class="card contact-form reveal" data-contact-form data-endpoint={formEndpoint} data-email={links.email}>
+                    <div class="field-row">
+                        <label>Name<input name="name" type="text" autocomplete="name" required /></label>
+                        <label>Email<input name="email" type="email" autocomplete="email" required /></label>
+                    </div>
+                    <label>Message<textarea name="message" rows="5" required></textarea></label>
+                    {/* Spam trap for form services: hidden from people, tempting to bots. */}
+                    <input class="trap" name="_gotcha" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" />
+                    <button class="button primary" type="submit">Send the bottle</button>
+                    <p class="status" data-form-status role="status"></p>
+                </form>
+                <ul class="card contact-links reveal">
+                    <li><span>Email</span><a href={`mailto:${links.email}`}>{links.email}</a></li>
+                    <li><span>GitHub</span><a href={links.github} target="_blank" rel="noopener">SeanG-rsd</a></li>
+                    <li><span>LinkedIn</span><a href={links.linkedin} target="_blank" rel="noopener">seangutmann</a></li>
+                    <li><span>Instagram</span><a href={links.instagram} target="_blank" rel="noopener">gutmann.sean</a></li>
+                </ul>
+            </div>
+            <p class="copyright">© {new Date().getFullYear()} Sean Gutmann. Back to the <a href="#top">summit</a>.</p>
+        </footer>
+    </main>
+</JourneyLayout>
 
 <style>
-	canvas {
+    .journey {
+        position: relative;
+        z-index: 1;
+        padding: 0 clamp(16px, 8vw, 128px) 0 clamp(16px, 5vw, 76px);
+    }
+
+    h1, h2, h3 { font-weight: 400; }
+
+    h3 {
+        font-family: var(--display);
+        font-size: 26px;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    /* Summit */
+
+    .hero {
+        min-height: 100vh;
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 18px;
+        padding: 80px 0 40px;
+    }
+
+    h1 {
+        font-family: var(--display);
+        font-size: clamp(68px, 10.5vw, 158px);
+        line-height: .9;
+        margin: 0;
+        color: var(--paper);
+        -webkit-text-stroke: 3px var(--ink);
+        paint-order: stroke fill;
+        text-shadow: 5px 6px 0 var(--ink);
+        letter-spacing: .005em;
+    }
+
+    .alt {
+        display: inline-block;
+        margin: 0;
+        padding: 4px 13px;
+        background: var(--ink);
+        border-radius: 999px;
+        color: var(--paper);
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .intro {
+        max-width: 500px;
+        padding: 20px 22px;
+        transform: rotate(-.6deg);
+    }
+
+    .intro p { margin: 0 0 14px; font-size: 18px; font-weight: 500; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .button {
+        display: inline-block;
+        padding: 8px 18px;
+        background: var(--paper);
+        border: 3px solid var(--ink);
+        border-radius: 999px;
+        box-shadow: 3px 4px 0 var(--ink);
+        color: var(--ink);
+        font: inherit;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease;
+    }
+
+    .button.primary { background: var(--sun); }
+    .button:hover { transform: translate(-1px, -2px); box-shadow: 4px 6px 0 var(--ink); }
+    .button:active { transform: translate(2px, 3px); box-shadow: 1px 1px 0 var(--ink); }
+    .button:disabled { opacity: .6; cursor: progress; }
+
+    .follow {
+        margin-top: 8px;
+        padding: 4px 14px;
+        background: var(--ink);
+        border-radius: 999px;
+        color: var(--paper);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .follow span { display: inline-block; animation: nudge 1.2s ease-in-out infinite alternate; }
+    @keyframes nudge { to { transform: translateY(5px); } }
+
+    /* Chapters */
+
+    .chapter {
+        padding-bottom: 34vh;
+    }
+
+    .chapter.last { padding-bottom: 28px; }
+
+    .chapter-head {
+        min-height: 82vh;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    h2 {
+        font-family: var(--display);
+        font-size: clamp(42px, 6.6vw, 96px);
+        line-height: 1;
+        margin: 0;
+        max-width: 11em;
+        padding: .14em .3em .18em;
+        background: var(--accent);
+        border: 4px solid var(--ink);
+        border-radius: 22px;
+        box-shadow: 7px 8px 0 var(--ink);
+        transform: rotate(-1.6deg);
+    }
+
+    .lede {
+        max-width: 28em;
+        margin: 8px 0 0;
+        padding: 8px 15px;
+        background: var(--paper);
+        border: 3px solid var(--ink);
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .dates {
+        margin: 0 0 4px;
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--ink-soft);
+    }
+
+    .org { margin: 2px 0 10px; font-weight: 600; }
+
+    .points { margin: 0; padding-left: 20px; list-style: disc; }
+    .points li { margin-top: 5px; }
+    .points li::marker { color: var(--orange); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    /* Now */
+
+    .now-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px;
+        max-width: 1160px;
+    }
+
+    .now-card { display: flex; flex-direction: column; overflow: hidden; }
+
+    .progress { border-bottom: 4px solid var(--ink); }
+
+    .art, .photos { position: relative; height: 240px; overflow: hidden; }
+
+    .photos { display: flex; gap: 4px; overflow-x: auto; }
+    .photos img { height: 100%; width: auto; }
+
+    .art-cube {
+        display: grid;
+        place-items: center;
+        background: #0E0E0E;
+    }
+
+    .art-cube img { width: 220px; height: 220px; }
+
+    .scanline {
         position: absolute;
-        top: 0;
-        left: 0;
+        left: 22%;
+        right: 22%;
+        top: 22%;
+        height: 3px;
+        background: var(--sun);
+        box-shadow: 0 0 12px var(--sun);
+        animation: scan 2.6s ease-in-out infinite alternate;
+    }
+    @keyframes scan { to { top: 76%; } }
+
+    .art-hive { background: #FFF1C2; }
+    .art-hive svg { width: 100%; height: 100%; }
+
+    .bee {
+        position: absolute;
+        image-rendering: pixelated;
+        animation: buzz 7s ease-in-out infinite alternate;
+    }
+    .bee.b1 { left: 8%; top: 24%; }
+    .bee.b2 { left: 34%; top: 62%; animation-duration: 5.2s; animation-delay: -2s; }
+    .bee.b3 { left: 60%; top: 12%; animation-duration: 8.5s; animation-delay: -4s; }
+    @keyframes buzz {
+        25% { translate: 40px -14px; }
+        50% { translate: 62px 16px; }
+        75% { translate: 90px -6px; }
+        100% { translate: 130px 12px; }
+    }
+
+    .now-body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 1;
+        gap: 12px;
+        padding: 20px 22px 24px;
+    }
+
+    .now-body h3 { font-size: 32px; }
+    .now-body > p { margin: 0; }
+
+    .log { width: 100%; font-size: 14px; }
+
+    .log h4 {
+        margin: 2px 0 6px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink-soft);
+    }
+
+    .log ul { list-style: none; margin: 0; padding: 0; }
+    .log li { border-top: 1px solid var(--paper-deep); }
+
+    .log a {
+        display: flex;
+        gap: 12px;
+        padding: 5px 0;
+        color: var(--ink);
+        text-decoration: none;
+    }
+
+    .log a:hover { color: var(--orange); }
+
+    .log time {
+        flex: none;
+        width: 50px;
+        font-family: var(--mono);
+        font-size: 12px;
+        line-height: 21px;
+        color: var(--ink-soft);
+    }
+
+    .now-body .button { margin-top: auto; }
+
+    /* Experience */
+
+    .timeline {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 24px;
+        max-width: 720px;
+    }
+
+    .job { padding: 22px 24px; }
+
+    /* Projects */
+
+    .crate-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 26px;
+        max-width: 1240px;
+    }
+
+    .crate {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: transform .16s ease;
+    }
+
+    .crate:hover { transform: translateY(-5px) rotate(-.5deg); }
+
+    .crate-image {
+        height: 190px;
+        padding: 10px;
+        background: #D9A96B repeating-linear-gradient(90deg, transparent 0 46px, rgba(122, 81, 56, .35) 46px 49px);
+        border-bottom: 4px solid var(--ink);
+    }
+
+    .crate-image img {
         width: 100%;
         height: 100%;
-        z-index: -1;
-		background-color: var(--matric-black);
-  }
+        object-fit: contain;
+    }
 
-	main {
-		height: 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-family: 'Fira Code', monospace;
-	}
+    .crate-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 16px 18px 18px;
+    }
 
-	h1 {
-		fill-color: rgb(255, 255, 255, 255);
-		font-size: 44px;
-		margin-top: 0.25em;
-	}
+    .crate h3 { font-size: 23px; }
+
+    .kind { margin: 2px 0 8px; font-weight: 600; font-size: 15px; }
+    .summary { margin: 0 0 12px; font-size: 15px; line-height: 1.45; }
+
+    .crate-links {
+        display: flex;
+        gap: 16px;
+        margin-top: auto;
+        padding-top: 12px;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .crate-links a { color: var(--ink); text-underline-offset: 3px; }
+    .crate-links a:hover { color: var(--orange); }
+
+    /* Skills and education */
+
+    .skill-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        max-width: 780px;
+    }
+
+    .skill { padding: 18px 20px 20px; }
+    .skill h3 { margin-bottom: 12px; }
+
+    .school-stack {
+        display: grid;
+        gap: 22px;
+        max-width: 720px;
+    }
+
+    .school { padding: 20px 24px; }
+    .lead { margin-top: 14px; }
+    .lead h4 { margin: 0; font-size: 17px; font-weight: 800; }
+    .lead .dates { margin: 0 0 2px; }
+    .highlight { margin: 0; font-weight: 700; }
+    .detail { margin: 6px 0 0; font-size: 15px; color: var(--ink-soft); }
+
+    /* Contact */
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+        align-items: start;
+        gap: 22px;
+        max-width: 780px;
+    }
+
+    .contact-form { display: grid; gap: 14px; padding: 22px; }
+
+    .field-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+
+    label { display: grid; gap: 4px; font-weight: 700; font-size: 15px; }
+
+    input, textarea {
+        width: 100%;
+        padding: 9px 12px;
+        background: #fff;
+        border: 3px solid var(--ink);
+        border-radius: 12px;
+        color: var(--ink);
+        font: inherit;
+        font-weight: 400;
+    }
+
+    textarea { resize: vertical; }
+
+    .contact-form button { justify-self: start; }
+
+    .status { min-height: 1.5em; margin: 0; font-size: 15px; font-weight: 600; }
+    .status:empty { display: none; }
+
+    .trap { position: absolute; left: -9999px; width: 1px; height: 1px; }
+
+    .contact-links {
+        list-style: none;
+        margin: 0;
+        padding: 16px 20px;
+    }
+
+    .contact-links li { padding: 7px 0; border-top: 1px solid var(--paper-deep); }
+    .contact-links li:first-child { border-top: 0; }
+    .contact-links span { display: block; font-size: 13px; color: var(--ink-soft); }
+
+    .contact-links a {
+        color: var(--ink);
+        font-weight: 700;
+        overflow-wrap: anywhere;
+        text-underline-offset: 3px;
+    }
+
+    .contact-links a:hover { color: var(--orange); }
+
+    .copyright {
+        margin: 40px 0 0;
+        color: var(--paper);
+        font-size: 14px;
+    }
+
+    .copyright a { color: var(--paper); font-weight: 700; }
+
+    /* Elevation gauge */
+
+    .rail {
+        position: fixed;
+        z-index: 2;
+        bottom: 20px;
+        right: clamp(12px, 2vw, 30px);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 12px;
+    }
+
+    .readout {
+        display: grid;
+        margin: 0;
+        padding: 5px 10px;
+        background: var(--ink);
+        border: 2px solid var(--paper);
+        border-radius: 12px;
+        color: var(--paper);
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .readout-label { font-size: 10px; font-weight: 400; opacity: .75; }
+
+    .rail ol {
+        list-style: none;
+        display: grid;
+        gap: 2px;
+        margin: 0 8px 0 0;
+        padding: 0;
+    }
+
+    .rail a {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 24px;
+        height: 24px;
+        color: var(--ink);
+        text-decoration: none;
+    }
+
+    .rail a::after {
+        content: "";
+        width: 12px;
+        height: 12px;
+        background: var(--paper);
+        border: 3px solid var(--ink);
+        border-radius: 50%;
+        transition: transform .15s ease, background-color .15s ease;
+    }
+
+    .rail a[aria-current]::after { background: var(--orange); transform: scale(1.4); }
+
+    .rail a span {
+        position: absolute;
+        right: 30px;
+        padding: 1px 9px;
+        background: var(--paper);
+        border: 2px solid var(--ink);
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity .12s ease;
+    }
+
+    .rail a:hover span, .rail a:focus-visible span { opacity: 1; }
+
+    .mobile-nav { display: none; }
+
+    /* Layout changes */
+
+    @media (max-width: 1100px) {
+        .crate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 860px), (max-aspect-ratio: 1/1) {
+        .rail { display: none; }
+
+        .mobile-nav {
+            display: block;
+            position: fixed;
+            z-index: 3;
+            top: 12px;
+            right: 12px;
+            background: var(--ink);
+            border-radius: 16px;
+            color: var(--paper);
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .mobile-nav summary {
+            display: flex;
+            gap: 12px;
+            min-height: 36px;
+            align-items: center;
+            padding: 0 13px;
+            list-style: none;
+            cursor: pointer;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .mobile-nav summary::-webkit-details-marker { display: none; }
+        .menu-word { color: var(--sun); }
+
+        .mobile-nav ol { list-style: none; margin: 0; padding: 0 6px 8px; }
+
+        .mobile-nav a {
+            display: block;
+            padding: 8px 8px;
+            color: var(--paper);
+            text-decoration: none;
+        }
+
+        .journey { padding-inline: 16px; }
+
+        .hero {
+            justify-content: flex-start;
+            padding: 64px 0 24px;
+            min-height: 92vh;
+        }
+
+        .intro p { font-size: 16px; }
+        .actions .button { padding: 6px 12px; }
+        .follow { margin-top: auto; }
+
+        .chapter { padding-bottom: 46vh; }
+        .chapter-head { min-height: 62vh; justify-content: flex-start; padding-top: 70px; }
+        h2 { box-shadow: 5px 6px 0 var(--ink); }
+        .lede { font-size: 16px; }
+
+        .now-grid, .skill-grid, .contact-grid, .crate-grid, .field-row { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .follow span, .scanline, .bee { animation: none; }
+    }
+</style>
+
+<style is:global>
+    /* Added to the body by journey.ts, so it can't be scoped to this page's markup. */
+    .chart-tip {
+        position: fixed;
+        z-index: 10;
+        padding: 3px 10px;
+        background: var(--ink);
+        border-radius: 8px;
+        color: var(--paper);
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        pointer-events: none;
+    }
 </style>
 
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-    if (!canvas) return;
-    
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    const fontSize = 16;
-    const columns = Math.floor(canvas.width / fontSize);
-    const drops: number[] = [];
+    import { startJourney } from "../javascript/journey";
 
-    for (let i = 0; i < columns; i++) {
-      drops[i] = 0;
-    }
-    
-    const str = "abcdefghijklmnopqrstuvwxyz     0123456789    ";
-    
-    const draw = () => {
-      context.fillStyle = "rgba(0, 0, 0, 0.08)";
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      
-      context.font = `700 ${fontSize}px monospace`;
-      context.fillStyle = "#00FF41";
-      
-      for (let i = 0; i < columns; i++) {
-
-        const index = Math.floor(Math.random() * str.length);
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-        
-        context.fillText(str[index], x, y);
-
-        if (y >= canvas.height && Math.random() > 0.99) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
-      }
-    };
-    draw();
-    
-    setInterval(draw, 50);
-  });
-
+    startJourney();
 </script>
