@@ -38,4 +38,4 @@ jobs:
           sudo apt-get update && sudo apt-get install -y lftp
           lftp -c "set sftp:auto-confirm yes;
             open --user '$SFTP_USER' --env-password -p $PORT sftp://$HOST;
-            mirror --reverse --delete --verbose --dry-run --exclude-glob .htaccess dist/ '$REMOTE_DIR'"
+            mirror --reverse --delete --verbose --exclude-glob .htaccess dist/ '$REMOTE_DIR'"
