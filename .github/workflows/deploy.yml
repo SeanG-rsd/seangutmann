@@ -1,0 +1,41 @@
+name: Build and deploy
+
+on:
+  schedule:
+    - cron: "0 12 * * *" # once a day, in UTC
+  push:
+    branches: [main]
+  workflow_dispatch: # adds a manual "Run workflow" button
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Build
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm run build 2>&1 | tee build.log
+          if grep -q '\[stats\]' build.log; then
+            echo "A stats fetch failed, so the live site stays as it is."
+            exit 1
+          fi
+      - name: Sync to IONOS
+        env:
+          HOST: ${{ secrets.IONOS_SFTP_HOST }}
+          PORT: ${{ secrets.IONOS_SFTP_PORT }}
+          SFTP_USER: ${{ secrets.IONOS_SFTP_USER }}
+          LFTP_PASSWORD: ${{ secrets.IONOS_SFTP_PASSWORD }}
+          REMOTE_DIR: ${{ secrets.IONOS_SFTP_PATH }}
+        run: |
+          sudo apt-get update && sudo apt-get install -y lftp
+          lftp -c "set sftp:auto-confirm yes;
+            open --user '$SFTP_USER' --env-password -p $PORT sftp://$HOST;
+            mirror --reverse --delete --verbose --dry-run --exclude-glob .htaccess dist/ '$REMOTE_DIR'"
