@@ -11,8 +11,8 @@ export const links = {
 // widget shows labelled sample data in `astro dev` and is left out of the production build.
 export const handles = {
     github: "SeanG-rsd",
-    leetcode: null as string | null,
-    wakatime: null as string | null,
+    leetcode: "Seagut20",
+    wakatime: "SeanGut",
 };
 
 // Elevation readout (ft) shown by the gauge when each scene is on screen.
@@ -30,8 +30,21 @@ export const stops = [
 // Add screenshots to `photos` as you take them. They replace the drawn art on the card.
 export const nowProjects = [
     {
+        title: "BeavBus",
+        repo: "OSU-App-Club/beavbus",
+        summary: "A university-requested app that modernizes campus transit tracking, with OSU shuttles and Corvallis city buses together on one live map.",
+        points: [
+            "Directing a team of 10+ students in the App Development Club",
+            "Shows buses, routes, and stops for both transit systems",
+            "Added city buses and stops that resize with zoom, and upgraded the app to Expo SDK 58",
+        ],
+        tech: ["React Native", "Expo", "TypeScript", "Redux", "React Native Maps", ".NET"],
+        art: "bus",
+        photos: ["/demos/BB1.png", "/demos/BB2.png", "/demos/BB3.png"],
+    },
+    {
         title: "Cube Solver",
-        repo: "rubiks-solver",
+        repo: "SeanG-rsd/rubiks-solver",
         summary: "A mobile app that scans a Rubik's Cube with your camera and walks you through solving it, move by move, on an interactive 3D model.",
         points: [
             "Samples tile colors from the live camera feed in real time",
@@ -44,7 +57,7 @@ export const nowProjects = [
     },
     {
         title: "The Grand Tour",
-        repo: "TheGrandTour",
+        repo: "SeanG-rsd/TheGrandTour",
         summary: "A 2D game in Unity, played on a hex tilemap. Place buildings, grow your hives, and send your bees out across the map.",
         points: [
             "Tilemap with building placement and hover previews",

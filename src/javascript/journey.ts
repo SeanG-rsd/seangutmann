@@ -142,6 +142,7 @@ function setUpActivities() {
         }), 0)
         .to(bikeWheels, { rotation: 2160, duration: 1 }, 0);
     swing(bike, "pedal-leg", "-16 -88", 14, 20);
+    swing(bike, "pedal-leg-far", "-16 -88", -14, 20);
 
     // The truck hauls the shipped apps across the valley.
     const truckWheels = gsap.utils.toArray<SVGGElement>('[data-a="truck"] [data-a="wheel"]');

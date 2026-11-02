@@ -53,8 +53,9 @@ async function fetchGitHub(username: string) {
 }
 
 async function fetchCommits(repo: string) {
+    // Filtered by author because some of these repos are shared with a team.
     const commits = await getJson(
-        `https://api.github.com/repos/${handles.github}/${repo}/commits?per_page=6`,
+        `https://api.github.com/repos/${repo}/commits?per_page=6&author=${handles.github}`,
         { headers: GITHUB_HEADERS },
     );
     if (!commits) return [];
@@ -118,6 +119,7 @@ async function fetchLeetCode(username: string): Promise<LeetCodeStats | null> {
 export interface WakaTimeStats {
     url: string;
     sample: boolean;
+    range: string;
     total: string;
     dailyAverage: string;
     languages: { name: string; value: number; label: string }[];
@@ -125,16 +127,15 @@ export interface WakaTimeStats {
 }
 
 async function fetchWakaTime(username: string): Promise<WakaTimeStats | null> {
-    // Public stats need no key. WAKATIME_API_KEY unlocks a profile that keeps them private.
-    const key = import.meta.env.WAKATIME_API_KEY;
-    const result = await getJson(`https://wakatime.com/api/v1/users/${username}/stats/last_7_days`, {
-        headers: key ? { Authorization: `Basic ${btoa(key)}` } : {},
-    });
+    // This range has to match the public stats range in your WakaTime profile settings.
+    // API keys are rejected here, so the profile has to share its stats publicly.
+    const result = await getJson(`https://wakatime.com/api/v1/users/${username}/stats/all_time`);
     const data = result?.data;
     if (!data?.human_readable_total) return null;
     return {
         url: `https://wakatime.com/@${username}`,
         sample: false,
+        range: data.human_readable_range,
         total: data.human_readable_total,
         dailyAverage: data.human_readable_daily_average,
         languages: (data.languages ?? [])
@@ -161,6 +162,7 @@ const SAMPLE_LEETCODE: LeetCodeStats = {
 const SAMPLE_WAKATIME: WakaTimeStats = {
     url: "https://wakatime.com",
     sample: true,
+    range: "since Jan 2026",
     total: "18 hrs 42 mins",
     dailyAverage: "2 hrs 40 mins",
     languages: [
