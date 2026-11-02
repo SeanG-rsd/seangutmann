@@ -35,13 +35,6 @@ jobs:
           LFTP_PASSWORD: ${{ secrets.IONOS_SFTP_PASSWORD }}
           REMOTE_DIR: ${{ secrets.IONOS_SFTP_PATH }}
         run: |
-          for name in HOST PORT SFTP_USER LFTP_PASSWORD REMOTE_DIR; do
-            if [ -z "$(printenv "$name")" ]; then
-              echo "::error::$name is empty, so its IONOS_SFTP secret is missing or misnamed."
-              missing=1
-            fi
-          done
-          [ -z "$missing" ] || exit 1
           sudo apt-get update && sudo apt-get install -y lftp
           lftp -c "set sftp:auto-confirm yes;
             open --user '$SFTP_USER' --env-password -p $PORT sftp://$HOST;
