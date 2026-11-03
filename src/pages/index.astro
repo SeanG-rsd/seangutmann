@@ -81,7 +81,7 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
             <header class="chapter-head">
                 <p class="alt">{altLabel("now", "The rock face")}</p>
                 <h2>On the wall</h2>
-                <p class="lede">The projects I'm climbing right now.</p>
+                <p class="lede">The projects I'm climbing right now</p>
             </header>
             <div class="now-grid">
                 {nowProjects.map((project) => (
@@ -112,7 +112,16 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
                         <div class="now-body">
                             <h3>{project.title}</h3>
                             <p>{project.summary}</p>
-                            <ul class="points">{project.points.map((point) => <li>{point}</li>)}</ul>
+                            <div class="status">
+                                <h4>Done</h4>
+                                <ul class="done">{project.done.map((point) => <li>{point}</li>)}</ul>
+                                {project.inProgress.length > 0 && (
+                                    <>
+                                        <h4>In progress</h4>
+                                        <ul class="doing">{project.inProgress.map((point) => <li>{point}</li>)}</ul>
+                                    </>
+                                )}
+                            </div>
                             <div class="tags">{project.tech.map((tech) => <span class="tag">{tech}</span>)}</div>
                             {commits[project.repo]?.length > 0 && (
                                 <div class="log">
@@ -136,7 +145,7 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
             <header class="chapter-head">
                 <p class="alt">{altLabel("experience", "The forest trail")}</p>
                 <h2>The trail so far</h2>
-                <p class="lede">Where I've worked, and what I did there.</p>
+                <p class="lede">Where I've worked, and what I did there</p>
             </header>
             <ol class="timeline">
                 {experience.map((job) => (
@@ -155,7 +164,7 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
             <header class="chapter-head">
                 <p class="alt">{altLabel("projects", "The valley road")}</p>
                 <h2>Shipped</h2>
-                <p class="lede">Loaded up and out the door: games, apps, and hackathon builds.</p>
+                <p class="lede">Finished games, apps, and hackathon projects</p>
             </header>
             <div class="crate-grid">
                 {projects.map((project) => (
@@ -182,7 +191,7 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
             <header class="chapter-head">
                 <p class="alt">{altLabel("records", "Muscle beach")}</p>
                 <h2>Personal records</h2>
-                <p class="lede">The other kind of PR: commits, contests, and hours at the keyboard.</p>
+                <p class="lede">The other kind of PR: commits, contests, and hours at the keyboard</p>
             </header>
             <StatsPanel github={github} leetcode={leetcode} wakatime={wakatime} />
         </section>
@@ -192,7 +201,7 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
             <header class="chapter-head">
                 <p class="alt">{altLabel("skills", "The beach")}</p>
                 <h2>Beach day kit</h2>
-                <p class="lede">What I bring with me when there's something to build.</p>
+                <p class="lede">What I bring with me when there's something to build</p>
             </header>
             <div class="skill-grid">
                 {skills.map((group) => (
@@ -209,7 +218,7 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
             <header class="chapter-head">
                 <p class="alt">{altLabel("education", "Open water")}</p>
                 <h2>Deep dive</h2>
-                <p class="lede">School, clubs, and the things I go deep on.</p>
+                <p class="lede">School, clubs, and the things I go deep on</p>
             </header>
             <div class="school-stack">
                 {education.map((school) => (
@@ -240,7 +249,7 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
             <header class="chapter-head">
                 <p class="alt">{altLabel("contact", "The seafloor")}</p>
                 <h2>Message in a bottle</h2>
-                <p class="lede">You made it to the bottom. Have an internship, a project, or a good trail recommendation? Send it down.</p>
+                <p class="lede">You made it to the bottom. Have an internship, a project, or a good trail recommendation? Send it down</p>
             </header>
             <div class="contact-grid">
                 <form class="card contact-form reveal" data-contact-form data-endpoint={formEndpoint} data-email={links.email}>
@@ -487,6 +496,40 @@ const hexColors = ["#F5C84B", "#E5A92B", "#FFDD7A"];
 
     .now-body h3 { font-size: 32px; }
     .now-body > p { margin: 0; }
+
+    .status { width: 100%; }
+
+    .status h4 {
+        margin: 2px 0 2px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--ink-soft);
+    }
+
+    .status ul { list-style: none; margin: 0; padding: 0; }
+    .status ul + h4 { margin-top: 12px; }
+    .status li { position: relative; margin-top: 5px; padding-left: 24px; }
+
+    .status .done li::before {
+        content: "✓";
+        position: absolute;
+        left: 2px;
+        color: var(--teal);
+        font-weight: 800;
+    }
+
+    /* Half-filled dot: started, not finished. */
+    .status .doing li::before {
+        content: "";
+        position: absolute;
+        left: 1px;
+        top: .38em;
+        width: 9px;
+        height: 9px;
+        border: 2.5px solid var(--orange);
+        border-radius: 50%;
+        background: linear-gradient(90deg, var(--orange) 50%, transparent 50%);
+    }
 
     .log { width: 100%; font-size: 14px; }
 

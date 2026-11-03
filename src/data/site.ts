@@ -28,15 +28,19 @@ export const stops = [
 ];
 
 // Add screenshots to `photos` as you take them. They replace the drawn art on the card.
+// Move items from `inProgress` to `done` as you finish them. An empty `inProgress` hides that list.
 export const nowProjects = [
     {
         title: "BeavBus",
         repo: "OSU-App-Club/beavbus",
         summary: "A university-requested app that modernizes campus transit tracking, with OSU shuttles and Corvallis city buses together on one live map.",
-        points: [
+        done: [
             "Directing a team of 10+ students in the App Development Club",
             "Shows buses, routes, and stops for both transit systems",
-            "Added city buses and stops that resize with zoom, and upgraded the app to Expo SDK 58",
+            "Creating a custom API for bus routes and stops to organize data cleanly"
+        ],
+        inProgress: [
+            "Displaying data onto bus stops for live updates",
         ],
         tech: ["React Native", "Expo", "TypeScript", "Redux", "React Native Maps", ".NET"],
         art: "bus",
@@ -46,12 +50,15 @@ export const nowProjects = [
         title: "Cube Solver",
         repo: "SeanG-rsd/rubiks-solver",
         summary: "A mobile app that scans a Rubik's Cube with your camera and walks you through solving it, move by move, on an interactive 3D model.",
-        points: [
+        done: [
             "Samples tile colors from the live camera feed in real time",
-            "Computes the solution with the Kociemba two-phase algorithm",
-            "Integrating rubiks-algorithm, my own solver written in C++",
+            "Uses 3D model to walk you through the solve",
+            "Integrating rubiks-algorithm, my own solver written in C++"
         ],
-        tech: ["React Native", "Expo", "React Three Fiber", "FastAPI", "C++"],
+        inProgress: [
+            "Publishing onto iOS App Store",
+        ],
+        tech: ["React Native", "Expo", "React Three Fiber", "FastAPI", "C++", "Typescript"],
         art: "cube",
         photos: [] as string[],
     },
@@ -59,12 +66,15 @@ export const nowProjects = [
         title: "The Grand Tour",
         repo: "SeanG-rsd/TheGrandTour",
         summary: "A 2D game in Unity, played on a hex tilemap. Place buildings, grow your hives, and send your bees out across the map.",
-        points: [
+        done: [
             "Tilemap with building placement and hover previews",
-            "Bees travel between hives in lines, with erratic flight",
+            "Can send bees between hives and build up your colony",
             "Started on a 3D grid before settling on a 2D tilemap",
         ],
-        tech: ["Unity", "C#", "HLSL"],
+        inProgress: [
+            "Creating human beekeeper enemies to attack the hive"
+        ],
+        tech: ["Unity", "C#", "Aseprite"],
         art: "hive",
         photos: [] as string[],
     },
